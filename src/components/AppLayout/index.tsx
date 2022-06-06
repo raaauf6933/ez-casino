@@ -1,19 +1,17 @@
-import * as React from 'react';
-import AppHeader from '../AppHeader';
-import { Box } from '@mui/material';
-import SideMenu from '../StaticDrawer';
+import * as React from "react";
+import AppHeader from "../AppHeader";
+import { Box } from "@mui/material";
+import SideMenu from "../StaticDrawer";
 
+const AppLayout = (props: { children: React.ReactNode }): JSX.Element => {
+  const { children } = props;
 
-
-const AppLayout = (props: { children: React.ReactNode; }):JSX.Element => {
-  const {children} = props;
-  
   return (
     <>
-      <Box>
+      <Box sx={{minHeight:"100vh"}}>
         <AppHeader />
         <SideMenu />
-        <Box component="main" sx={{ padding: '1.5em 2em 0em 16em' }}>
+        <Box component="main" sx={{ padding: "1.5em 2em 0em 16em" }} >
           {children}
         </Box>
       </Box>

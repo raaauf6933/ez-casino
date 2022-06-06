@@ -24,6 +24,7 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 'error',
     '@typescript-eslint/no-empty-interface': 'error',
     '@typescript-eslint/no-explicit-any': 'off',
+    'no-extra-boolean-cast': 'off',
     'react/react-in-jsx-scope': 'off',
     'sort-keys': ['warn', 'asc', { caseSensitive: true, minKeys: 2, natural: false }]
   },
