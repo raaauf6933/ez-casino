@@ -1,18 +1,22 @@
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { useAuth } from "context/auth/context";
+import Popper from "./components/Popper";
+// import Button from "@mui/material/Button";
 // import IconButton from "@mui/material/IconButton";
 // import MenuIcon from "@mui/icons-material/Menu";
 
-const AppHeader = () :JSX.Element => {
+const AppHeader = (): JSX.Element => {
+  const { logout } = useAuth();
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="static"
         style={{
-          background: '#14A873'
+          background: "#14A873"
         }}
       >
         <Toolbar>
@@ -28,7 +32,15 @@ const AppHeader = () :JSX.Element => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             EZ - CASINO
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Popper
+            toolbar={[
+              {
+                label: "Logout",
+                onClick: logout
+              }
+            ]}
+          />
+          {/* <Button color="inherit">Login</Button> */}
         </Toolbar>
       </AppBar>
     </Box>

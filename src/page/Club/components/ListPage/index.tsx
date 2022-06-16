@@ -30,7 +30,7 @@ const ListPage: React.FC<ListPageProps> = props => {
           value={searchValue}
           setValue={setSearchValue}
         />
-        <Table columns={columns} data={data} />
+        <Table columns={columns} data={data} loading={false} />
       </Card>
     </>
   );
