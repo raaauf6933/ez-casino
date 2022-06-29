@@ -1,4 +1,5 @@
 // import { initialFormDataType } from "./components/CreatePage";
+import { UserTypeEnum } from "types";
 
 export const userFormValidate = (formData: any) => {
   const {
@@ -9,7 +10,8 @@ export const userFormValidate = (formData: any) => {
     password,
     confirm_password,
     username,
-    usertype
+    usertype,
+    club_id
   } = formData;
 
   const firstNameValidate = () => {
@@ -80,7 +82,16 @@ export const userFormValidate = (formData: any) => {
     }
   };
 
+  const clubValidate = () => {
+    if (usertype === UserTypeEnum.CLUB_ADMIN && !club_id) {
+      return "This field is required";
+    } else {
+      return null;
+    }
+  };
+
   return {
+    club_id: clubValidate(),
     confirm_password: confirmPasswordValidate(),
     contact_number: contactNumberValidate(),
     email: emailValidate(),

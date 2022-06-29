@@ -13,7 +13,13 @@ interface AppStateContextType {
   dispatch: (action: AppStateAction) => void;
 }
 
-const AppStateContext = createContext<AppStateContextType | any>({});
+const AppStateContext = createContext<AppStateContextType>({
+  dispatch: () => null,
+  state: {
+    error: null,
+    loading: false
+  }
+});
 
 export const AppStateProvider: React.FC<AppStateProviderProps> = ({
   children

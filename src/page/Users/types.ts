@@ -1,3 +1,4 @@
+import { Club } from "page/Club/types";
 import { StatusType, UserTypeEnum } from "types";
 
 export interface User {
@@ -11,4 +12,5 @@ export interface User {
   updatedAt: string;
   username: string;
   usertype: UserTypeEnum;
+  Club: Club;
 }

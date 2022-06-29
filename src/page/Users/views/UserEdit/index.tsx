@@ -1,18 +1,18 @@
 import CreatePage from "page/Users/components/CreatePage";
 import { ToastContainer } from "react-toastify";
 import { getUser, updateUser as updateUserApi } from "page/Users/api";
-import "react-toastify/dist/ReactToastify.css";
 import * as React from "react";
-import useAxios from "hooks/useAxios";
+import useFetch from "hooks/useFetch";
 import { useParams } from "react-router-dom";
-import AppStateContext from "context/appState/context";
 import { toast } from "react-toastify";
 import _ from "lodash";
+import { StatusType } from "types";
+import { GET_CLUBS } from "page/Club/api";
+import makeHttpPost from "hooks/makeHttpPost";
 
 const UserEdit: React.FC = () => {
   const { id } = useParams();
-  const { dispatch } = React.useContext(AppStateContext);
-  const { useFetch, usePost } = useAxios();
+
   const { response, loading } = useFetch({
     method: "GET",
     params: {
@@ -30,31 +30,38 @@ const UserEdit: React.FC = () => {
     username: "",
     usertype: ""
   });
+  const { response: clubList, loading: ClubListLoading } = useFetch({
+    params: {
+      status: StatusType.ACTIVE
+    },
+    url: GET_CLUBS
+  });
 
-  const updateUser = async (formData: any) => {
-    try {
-      await usePost(
-        {
-          data: {
-            ..._.pick(formData, [
-              "first_name",
-              "last_name",
-              "email",
-              "contact_number",
-              "usertype",
-              "status"
-            ]),
-            id
-          },
-          method: "POST",
-          url: updateUserApi
-        },
-        dispatch
-      );
+  const [updateUser, updateUserOpts] = makeHttpPost({
+    onComplete: () => {
       toast("Saved!");
-    } catch (error: any) {
-      toast.error(error.response.data.message);
+    },
+    onError: err => {
+      toast.error(err?.response?.data.message);
     }
+  });
+
+  const onUpdateUser = async (formData: any) => {
+    updateUser({
+      data: {
+        ..._.pick(formData, [
+          "club_id",
+          "first_name",
+          "last_name",
+          "email",
+          "contact_number",
+          "usertype",
+          "status"
+        ]),
+        id
+      },
+      url: updateUserApi
+    });
   };
 
   return (
@@ -64,7 +71,9 @@ const UserEdit: React.FC = () => {
           type="edit"
           validationError={validationError}
           data={response?.data}
-          updateUser={updateUser}
+          updateUser={onUpdateUser}
+          loading={ClubListLoading || updateUserOpts.loading}
+          clubList={clubList?.data}
         />
       )}
 

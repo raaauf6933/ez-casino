@@ -1,6 +1,7 @@
 import { Box, Button } from "@mui/material";
 import Card from "components/Card";
 import useStyles from "./styles";
+import LoadingButton from "@mui/lab/LoadingButton";
 import * as React from "react";
 
 interface SaveButtonBarProps {
@@ -11,10 +12,12 @@ interface SaveButtonBarProps {
     back: string;
     save: string;
   };
+  loading: boolean;
+  disabled?: boolean;
 }
 
 const SaveButtonBar: React.FC<SaveButtonBarProps> = props => {
-  const { onSave, onBack, labels, hideSaveBtn } = props;
+  const { onSave, onBack, labels, hideSaveBtn, loading, disabled } = props;
   const classes = useStyles(props);
 
   return (
@@ -30,9 +33,18 @@ const SaveButtonBar: React.FC<SaveButtonBarProps> = props => {
 
             <div>
               {hideSaveBtn ? null : (
-                <Button variant="contained" color="primary" onClick={onSave}>
+                // <Button variant="contained" color="primary" onClick={onSave}>
+                //   {labels?.save ? labels?.save : "Save"}
+                // </Button>
+                <LoadingButton
+                  loading={loading}
+                  // loadingPosition="start"
+                  onClick={onSave}
+                  variant="contained"
+                  disabled={disabled}
+                >
                   {labels?.save ? labels?.save : "Save"}
-                </Button>
+                </LoadingButton>
               )}
             </div>
           </Box>

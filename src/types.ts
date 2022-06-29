@@ -1,9 +1,14 @@
+export type Dialog<TDialog extends string> = Partial<{
+  action: TDialog;
+}>;
+
 export interface ColumnType {
   label: string;
   path: string;
   key: string | number;
   colSpan?: number;
   content?: any;
+  hide?: boolean;
 }
 
 export enum AppStateActionType {

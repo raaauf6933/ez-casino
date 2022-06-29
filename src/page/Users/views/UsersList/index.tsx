@@ -1,7 +1,7 @@
 import ListPage from "page/Users/components/ListPage";
 import { columns } from "./../../utils";
 import React from "react";
-import useAxios from "hooks/useAxios";
+import useFetch from "hooks/useFetch";
 import { getAllUsers } from "../../api";
 import { User } from "./../../types";
 import StatusLabel from "components/StatusLabel";
@@ -11,8 +11,6 @@ interface UsersListProps {
 }
 
 const UsersList: React.FC<UsersListProps> = () => {
-  const { useFetch } = useAxios();
-
   const { response, loading } = useFetch({
     method: "GET",
     url: getAllUsers
@@ -20,7 +18,14 @@ const UsersList: React.FC<UsersListProps> = () => {
 
   const data =
     response?.data &&
-    response?.data.map((user: User) => ({
+    response?.data?.data.map((user: User) => ({
+      club_name: user?.Club?.club_name ? (
+        user?.Club?.club_name
+      ) : (
+        <>
+          <h3>--</h3>
+        </>
+      ),
       id: user.id,
       key: user.id,
       name: `${user.first_name} ${user.last_name}`,

@@ -1,7 +1,7 @@
 import * as React from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { Popper as PopperMui, Typography } from "@mui/material";
-import Fade from "@mui/material/Fade";
+import { Popover as PopperMui, Typography } from "@mui/material";
+// import Fade from "@mui/material/Fade";
 import Paper from "@mui/material/Paper";
 
 interface ToolBar {
@@ -40,28 +40,34 @@ const Popper: React.FC<PopperProps> = props => {
       <PopperMui
         id={id}
         open={openPopper}
-        placement="bottom-start"
+        onClose={() => setOpenPopper(false)}
+        anchorOrigin={{
+          horizontal: "center",
+          vertical: "bottom"
+        }}
         anchorEl={anchorEl}
-        transition
       >
-        {({ TransitionProps }) => (
-          <Fade {...TransitionProps} timeout={350}>
-            <Paper>
-              {toolbar.map((e, i) => (
-                <>
-                  <Typography
-                    key={e.label + i}
-                    style={{ cursor: "pointer" }}
-                    onClick={e.onClick}
-                    sx={{ p: 2 }}
-                  >
-                    {e.label}
-                  </Typography>
-                </>
-              ))}
-            </Paper>
-          </Fade>
-        )}
+        {/* {({ TransitionProps }) => (
+          <Fade {...TransitionProps} timeout={350}> */}
+        <Paper>
+          {toolbar.map((e, i) => (
+            <>
+              <Typography
+                key={e.label + i}
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  setOpenPopper(false);
+                  e.onClick();
+                }}
+                sx={{ p: 1.5 }}
+              >
+                {e.label}
+              </Typography>
+            </>
+          ))}
+        </Paper>
+        {/* </Fade>
+        )} */}
       </PopperMui>
     </div>
   );

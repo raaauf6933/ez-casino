@@ -9,7 +9,7 @@ import TableRow from "@mui/material/TableRow";
 // import { TableContainer, Paper } from "@mui/material";
 import TablePagination from "@mui/material/TablePagination";
 import { ColumnType } from "./../../types";
-// import useStyles from "./style";
+import useStyles from "./style";
 import usePaginate from "hooks/usePaginate";
 import { renderCollection } from "utils/misc";
 import { Skeleton } from "@mui/material";
@@ -23,7 +23,7 @@ interface TableProps {
 
 const Table: React.FC<TableProps> = props => {
   const { columns, data, loading, onRowClick } = props;
-  // const classes = useStyles();
+  const classes = useStyles();
 
   const [state, setState] = React.useState({
     currentPage: 0,
@@ -53,72 +53,67 @@ const Table: React.FC<TableProps> = props => {
     return _.get(item, column.path);
   };
 
+  const filterColumns = columns.filter(e => !e.hide);
+
   return (
     <>
       {/* <TableContainer component={Paper} className={classes.root}> */}
-      <TableComponent sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            {columns.map(thead => (
-              <TableCell key={thead.key}>
-                <b>{thead.label}</b>
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {renderCollection(
-            getPageData().data,
-            loading,
-            item => (
-              <TableRow
-                key={Object.keys(item)[0]}
-                onClick={() => (onRowClick ? onRowClick(item.id) : null)}
-                hover
-              >
-                {columns.map((column, index) => (
-                  <TableCell
-                    key={column.key + index.toString()}
-                    className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                  >
-                    {renderCell(item, column)}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ),
-            () => (
-              <TableRow>
-                <TableCell colSpan={columns.length} align="center">
-                  <h1>No Data</h1>
+      <div className={classes.root}>
+        <TableComponent sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              {filterColumns.map(thead => (
+                <TableCell key={thead.key}>
+                  <b>{thead.label}</b>
                 </TableCell>
-              </TableRow>
-            ),
-            () => (
-              <TableRow>
-                {columns.map(column => (
-                  <>
-                    <TableCell key={column.key} align="center">
-                      <Skeleton key={column.key} />
-                    </TableCell>
-                  </>
-                ))}
-              </TableRow>
-            )
-          )}
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {renderCollection(
+              getPageData().data,
+              loading,
+              item => (
+                <TableRow
+                  key={Object.keys(item)[0]}
+                  onClick={() => (onRowClick ? onRowClick(item.id) : null)}
+                  hover
+                >
+                  {columns.map((column, index) =>
+                    column.hide ? null : (
+                      <TableCell
+                        key={column.key + index.toString()}
+                        className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                      >
+                        {renderCell(item, column)}
+                      </TableCell>
+                    )
+                  )}
+                </TableRow>
+              ),
+              () => (
+                <TableRow>
+                  <TableCell colSpan={columns.length} align="center">
+                    <h1>No Data</h1>
+                  </TableCell>
+                </TableRow>
+              ),
+              () => (
+                <TableRow>
+                  {columns.map(column => (
+                    <>
+                      <TableCell key={column.key} align="center">
+                        <Skeleton key={column.key} />
+                      </TableCell>
+                    </>
+                  ))}
+                </TableRow>
+              )
+            )}
+          </TableBody>
+        </TableComponent>
+      </div>
 
-          {/* {getPageData().data.map((item: object) => (
-          <TableRow key={Object.keys(item)[0]} hover>
-            {columns.map((column, index) => (
-              <TableCell
-                key={column.key + index.toString()}
-                className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {renderCell(item, column)}
-              </TableCell>
-            ))}
-          </TableRow>
-        ))} */}
-        </TableBody>
-      </TableComponent>
       {/* </TableContainer> */}
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}

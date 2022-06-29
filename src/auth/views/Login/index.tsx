@@ -32,7 +32,7 @@ const Login: React.FC = props => {
   const classes = useStyles(props);
 
   const onSubmit = async (formData: LoginFormData) => {
-    const { error } = await userLogin(formData);
+    const error = await userLogin(formData);
 
     if (error) {
       setError(error);

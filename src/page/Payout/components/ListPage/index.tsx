@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 import Table from "components/Table";
 import { Card, Button } from "@mui/material";
-import { ColumnType } from "types";
+import { ColumnType, UserTypeEnum } from "types";
 import PageHeader from "components/PageHeader";
 import SearchBar from "components/SearchBar";
+import RequirePermission from "components/RequirePermission";
 
 interface ListPageProps {
   columns: ColumnType[];
   data: any[];
+  onUploadPayout: () => void;
+  onRowClick: (id: string) => void;
 }
 
 const ListPage: React.FC<ListPageProps> = props => {
-  const { columns, data } = props;
+  const { columns, data, onUploadPayout, onRowClick } = props;
   const [searchValue, setSearchValue] = useState<string>("");
 
   return (
@@ -19,9 +22,17 @@ const ListPage: React.FC<ListPageProps> = props => {
       <PageHeader
         title="Payouts"
         toolbar={
-          <Button variant="contained" color="primary">
-            Generate Payout
-          </Button>
+          <>
+            <RequirePermission userTypes={[UserTypeEnum.CLUB_ADMIN]}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={onUploadPayout}
+              >
+                Generate Payout
+              </Button>
+            </RequirePermission>
+          </>
         }
       />
       <Card>
@@ -30,7 +41,12 @@ const ListPage: React.FC<ListPageProps> = props => {
           value={searchValue}
           setValue={setSearchValue}
         />
-        <Table columns={columns} data={data} loading={false} />
+        <Table
+          columns={columns}
+          data={data}
+          loading={false}
+          onRowClick={id => onRowClick(id.toString())}
+        />
       </Card>
     </>
   );

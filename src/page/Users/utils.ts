@@ -18,6 +18,11 @@ export const columns: ColumnType[] = [
   },
   {
     key: 4,
+    label: "Club",
+    path: "club_name"
+  },
+  {
+    key: 5,
     label: "Status",
     path: "status"
   }

@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Divider, Typography } from "@mui/material";
 
 interface PageHeaderProps {
-  title: string;
+  title: string | undefined;
   toolbar?: React.ReactNode;
 }
 

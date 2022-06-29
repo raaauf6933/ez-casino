@@ -7,7 +7,9 @@ export default makeStyles(
   () => ({
     root: {
       bottom: 0,
+      maxWidth: "1024px",
       position: "fixed",
+      width: "100%",
       [newTheme.breakpoints.up("xs")]: {
         marginTop: "1em",
         position: "unset",
@@ -20,10 +22,6 @@ export default makeStyles(
       [newTheme.breakpoints.up("md")]: {
         position: "fixed",
         width: "70%"
-      },
-      [newTheme.breakpoints.up("lg")]: {
-        position: "fixed",
-        width: "80%"
       }
     }
   }),

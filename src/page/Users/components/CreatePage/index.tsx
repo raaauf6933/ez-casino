@@ -10,10 +10,12 @@ import Form from "components/Form";
 import PageHeader from "components/PageHeader";
 import SaveButtonBar from "components/SaveButtonBar";
 import SelectComponent from "components/Select";
+import { Club } from "page/Club/types";
 import * as React from "react";
-import { StatusType } from "types";
+import { StatusType, UserTypeEnum } from "types";
 
 export interface initialFormDataType {
+  club_id: number | null;
   confirm_password: string;
   contact_number: string;
   email: string;
@@ -31,12 +33,23 @@ interface CreatePageProps {
   validationError: any;
   type: "create" | "edit";
   data?: any;
+  loading: boolean;
+  clubList?: Club[];
 }
 
 const CreatePage: React.FC<CreatePageProps> = props => {
-  const { createUser, validationError, data, type, updateUser } = props;
+  const {
+    createUser,
+    validationError,
+    data,
+    type,
+    updateUser,
+    loading,
+    clubList
+  } = props;
 
   const initialFormData = {
+    club_id: data?.club_id || null,
     confirm_password: "",
     contact_number: data?.contact_number || "",
     email: data?.email || "",
@@ -48,6 +61,13 @@ const CreatePage: React.FC<CreatePageProps> = props => {
     usertype: data?.usertype || ""
   };
 
+  const clubListChoice = clubList
+    ? clubList?.map(e => ({
+        label: e.club_name,
+        value: e.id
+      }))
+    : [];
+
   return (
     <>
       <PageHeader title={type === "create" ? "Create User" : `# ${data?.id}`} />
@@ -55,7 +75,7 @@ const CreatePage: React.FC<CreatePageProps> = props => {
         initial={initialFormData}
         onSubmit={type === "create" ? createUser : updateUser}
       >
-        {({ change, data, submit }) => (
+        {({ change, data, submit, hasChanged }) => (
           <>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12} md={8}>
@@ -138,7 +158,7 @@ const CreatePage: React.FC<CreatePageProps> = props => {
                                 })
                               }
                               name="status"
-                              inputProps={{ "aria-label": "controlled" }}
+                              // inputProps={{ "aria-label": "controlled" }}
                             />
                           }
                           label="Active Status"
@@ -155,6 +175,11 @@ const CreatePage: React.FC<CreatePageProps> = props => {
                     label="User Type"
                     onChange={change}
                     value={data?.usertype}
+                    margin="normal"
+                    error={validationError.usertype ? true : false}
+                    helperText={
+                      validationError.usertype ? validationError.usertype : null
+                    }
                     choices={[
                       {
                         label: "SUPER USER",
@@ -166,6 +191,19 @@ const CreatePage: React.FC<CreatePageProps> = props => {
                       }
                     ]}
                   />
+                  {data?.usertype === UserTypeEnum.CLUB_ADMIN ? (
+                    <SelectComponent
+                      name="club_id"
+                      label="Club"
+                      onChange={change}
+                      value={data?.club_id}
+                      choices={clubListChoice}
+                      error={validationError.club_id ? true : false}
+                      helperText={
+                        validationError.club_id ? validationError.club_id : null
+                      }
+                    />
+                  ) : null}
                 </Card>
               </Grid>
               <Grid item xs={12} sm={12} md={8}>
@@ -194,7 +232,7 @@ const CreatePage: React.FC<CreatePageProps> = props => {
                             name="password"
                             value={data.password}
                             onChange={change}
-                            error={validationError.password}
+                            error={validationError.password ? true : false}
                             helperText={
                               validationError.password
                                 ? validationError.password
@@ -227,7 +265,12 @@ const CreatePage: React.FC<CreatePageProps> = props => {
                 </Card>
               </Grid>
             </Grid>
-            <SaveButtonBar onBack={() => null} onSave={submit} />
+            <SaveButtonBar
+              onBack={() => null}
+              onSave={submit}
+              disabled={!hasChanged}
+              loading={loading}
+            />
           </>
         )}
       </Form>

@@ -1,5 +1,11 @@
 import React from "react";
-import { Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+import {
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  FormHelperText
+} from "@mui/material";
 
 interface SelectComponentProps {
   name: any;
@@ -12,6 +18,8 @@ interface SelectComponentProps {
   value: any;
   margin?: any;
   hasDefaultNone?: any;
+  error?: boolean;
+  helperText?: string;
 }
 
 const SelectComponent: React.FC<SelectComponentProps> = ({
@@ -21,11 +29,18 @@ const SelectComponent: React.FC<SelectComponentProps> = ({
   onChange,
   value,
   margin,
-  hasDefaultNone
+  hasDefaultNone,
+  error,
+  helperText
 }) => {
   return (
     <>
-      <FormControl required fullWidth margin={margin ? margin : "none"}>
+      <FormControl
+        required
+        fullWidth
+        margin={margin ? margin : "none"}
+        error={error}
+      >
         <InputLabel id="demo-simple-select-autowidth-label">{label}</InputLabel>
         <Select
           name={name}
@@ -33,6 +48,7 @@ const SelectComponent: React.FC<SelectComponentProps> = ({
           value={value}
           labelId="demo-simple-select-autowidth-label"
           onChange={onChange}
+          error={error}
         >
           {/* <MenuItem value={"ACT"}>
             <em>ACTIVATE</em>
@@ -55,6 +71,7 @@ const SelectComponent: React.FC<SelectComponentProps> = ({
             </MenuItem>
           )}
         </Select>
+        {helperText ? <FormHelperText>{helperText}</FormHelperText> : null}
       </FormControl>
     </>
   );

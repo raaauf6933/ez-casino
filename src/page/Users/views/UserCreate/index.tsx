@@ -1,5 +1,6 @@
-import AppStateContext from "context/appState/context";
-import useAxios from "hooks/useAxios";
+import makeHttpPost from "hooks/makeHttpPost";
+import useFetch from "hooks/useFetch";
+import { GET_CLUBS } from "page/Club/api";
 import { createNewUser } from "page/Users/api";
 import CreatePage, {
   initialFormDataType
@@ -10,10 +11,10 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { StatusType, UserTypeEnum } from "types";
 import { hasNoError } from "utils/validators";
 
 const UserCreate: React.FC = () => {
-  const { dispatch } = React.useContext(AppStateContext);
   const navigate = useNavigate();
   const [validationError, setValidationError] = React.useState<any>({
     confirm_password: "",
@@ -26,21 +27,31 @@ const UserCreate: React.FC = () => {
     usertype: ""
   });
 
-  const { usePost } = useAxios();
+  const { response } = useFetch({
+    params: {
+      status: StatusType.ACTIVE
+    },
+    url: GET_CLUBS
+  });
 
-  const createUser = async (formData: initialFormDataType) => {
+  const [createUser, createUserOpts] = makeHttpPost({
+    onComplete: e => {
+      toast("User saved!");
+      navigate(userUrl(e?.data?.id.toString()));
+    },
+    onError: err => {
+      toast.error(err?.response?.data.message);
+    }
+  });
+
+  const onCreateUser = async (formData: initialFormDataType) => {
+    if (formData.usertype !== UserTypeEnum.CLUB_ADMIN) {
+      formData.club_id = null;
+    }
+
     const validate = userFormValidate(formData);
     if (hasNoError(validate)) {
-      try {
-        const result = await usePost(
-          { data: formData, url: createNewUser },
-          dispatch
-        );
-        toast("User saved!");
-        navigate(userUrl(result?.data?.id.toString()));
-      } catch (error: any) {
-        toast.error(error.response.data.message);
-      }
+      createUser({ data: formData, url: createNewUser });
     } else {
       setValidationError(validate);
     }
@@ -50,8 +61,10 @@ const UserCreate: React.FC = () => {
     <>
       <CreatePage
         type="create"
-        createUser={createUser}
+        createUser={onCreateUser}
         validationError={validationError}
+        loading={createUserOpts.loading}
+        clubList={response?.data}
       />
     </>
   );

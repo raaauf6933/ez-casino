@@ -1,42 +1,68 @@
+import useFetch from "hooks/useFetch";
+import { GET_AGENT, GET_AGENTS } from "page/Agent/api";
 import ListPage from "page/Agent/components/ListPage";
 import * as React from "react";
-import { columns } from "./../../utils";
+import { columns, parseAgentList } from "./../../utils";
+import { useUser } from "context/auth/context";
+import { UserTypeEnum } from "types";
+import AgentDrawerDetails from "page/Agent/components/AgentDrawerDetails";
+import { useNavigate } from "react-router-dom";
+import createDialogActionHandlers from "utils/handlers/createDialogActionHandlers";
+import {
+  AgentListUrl,
+  AgentListUrlDialog,
+  AgentListUrlQueryParams
+} from "page/Agent/url";
 
 interface AgentListProps {
-  data?: any;
+  params: AgentListUrlQueryParams;
 }
 
-const AgentList: React.FC<AgentListProps> = () => {
-  const data = [
+const AgentList: React.FC<AgentListProps> = props => {
+  const { params } = props;
+  const user = useUser();
+  const navigate = useNavigate();
+
+  const { response } = useFetch({
+    url: GET_AGENTS
+  });
+
+  const { response: agent, loading: loadingAgent } = useFetch(
     {
-      agent_name: "Jonas Kevin Esquillo",
-      date_added: "Dec, 23 2022",
-      id: "1",
-      status: "Active"
+      params: {
+        id: params.id
+      },
+      url: GET_AGENT
     },
     {
-      agent_name: "Jonas Kevin Esquillo",
-      date_added: "Dec, 23 2022",
-      id: "2",
-      status: "Active"
-    },
-    {
-      agent_name: "Jonas Kevin Esquillo",
-      date_added: "Dec, 23 2022",
-      id: "3",
-      status: "Active"
-    },
-    {
-      agent_name: "Jonas Kevin Esquillo",
-      date_added: "Dec, 23 2022",
-      id: "4",
-      status: "Active"
+      skip: !params.id
     }
-  ];
+  );
+
+  const [openAction, closeAction] = createDialogActionHandlers<
+    AgentListUrlDialog,
+    AgentListUrlQueryParams
+  >(navigate, AgentListUrl, params);
+
+  const agentList = parseAgentList(response);
 
   return (
     <>
-      <ListPage columns={columns} data={data} />
+      <ListPage
+        columns={columns.filter(e =>
+          user?.usertype === UserTypeEnum.SUPER_USER
+            ? e
+            : e.path !== "club_name"
+        )}
+        data={agentList}
+        onRowClick={id => openAction("agentDetails", { id })}
+      />
+      <AgentDrawerDetails
+        open={params.action === "agentDetails"}
+        onClose={closeAction}
+        agent={agent?.data}
+        loading={loadingAgent}
+      />
     </>
   );
 };

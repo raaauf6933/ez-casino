@@ -1,11 +1,12 @@
 import { LoginFormData } from "auth/views/Login";
 import { AxiosError, AxiosResponse } from "axios";
-import AppStateContext from "context/appState/context";
-import useAxios from "hooks/useAxios";
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { LOGIN } from "./api";
-import { setToken, isAuthenticated, removeTokens } from "./handlers";
+import { setToken, isAuthenticated, removeTokens, getToken } from "./handlers";
+import jwt_decode from "jwt-decode";
+import { UserTypeEnum } from "types";
+import makeHttpPost from "hooks/makeHttpPost";
 
 interface AuthContextInterface {
   userLogin: (data: LoginFormData) => {
@@ -14,6 +15,16 @@ interface AuthContextInterface {
   };
   isAuthenticated: () => void | any;
   logout: () => void;
+}
+
+interface UseUserInterface {
+  club_id: number;
+  first_name: string;
+  iat: number;
+  last_name: string;
+  username: string;
+  usertype: UserTypeEnum;
+  _id: number;
 }
 
 const AuthContext = React.createContext<AuthContextInterface | any>({
@@ -33,30 +44,24 @@ export const AuthContextProvider: React.FC<AuthContextProvideProps> = ({
   children
 }) => {
   const navigate = useNavigate();
-  const { usePost } = useAxios();
-  const { dispatch } = useContext(AppStateContext);
+  const [login] = makeHttpPost({
+    onComplete: e => {
+      setToken(e?.data?.token);
+      navigate("/");
+    }
+  });
 
   const userLogin: any = async (formData: {
     username: string;
     password: string;
   }) => {
-    try {
-      const { data } = await usePost(
-        {
-          data: formData,
-          method: "POST",
-          url: LOGIN
-        },
-        dispatch
-      );
+    const error = await login({
+      data: formData,
+      method: "POST",
+      url: LOGIN
+    });
 
-      setToken(data?.token);
-      navigate("/");
-
-      return { data, error: null };
-    } catch (error: any) {
-      return { data: null, error: error?.response?.data };
-    }
+    return error;
   };
 
   const logout = () => {
@@ -79,6 +84,11 @@ export const useAuth = () => {
     logout: auth.logout,
     userLogin: auth?.userLogin
   };
+};
+
+export const useUser = (): UseUserInterface | null => {
+  const token = getToken();
+  return token ? jwt_decode(token) : null;
 };
 
 export default AuthContext;

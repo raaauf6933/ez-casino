@@ -25,14 +25,26 @@ const AppLayout = (props: { children: React.ReactNode }): JSX.Element => {
           <Hidden smDown>
             <SideMenu />
           </Hidden>
-          <Box
-            component="main"
-            sx={{
-              padding: "1em 1em 1em 1em"
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+
+              width: "100%"
             }}
           >
-            {children}
-          </Box>
+            <Box
+              component="main"
+              sx={{
+                // maxWidth: "1024px",
+                overflow: "auto",
+                // width: "",
+                padding: "1em 1em 1em 1em"
+              }}
+            >
+              {children}
+            </Box>
+          </div>
         </div>
       </Box>
     </>

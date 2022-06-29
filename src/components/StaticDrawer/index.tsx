@@ -8,11 +8,19 @@ import {
   ListItemIcon,
   ListItemText
 } from "@mui/material";
+import { useUser } from "context/auth/context";
 
 const drawerWidth = 240;
 
 const SideMenu = (): JSX.Element => {
-  const menuList = createMenuStructure();
+  const menuStructure = createMenuStructure();
+  const user = useUser();
+
+  const menuList = menuStructure.filter(
+    e =>
+      e.permissionUserType.includes(user?.usertype) ||
+      e.permissionUserType.length === 0
+  );
 
   const activeStyle = {
     color: "#14A873",
