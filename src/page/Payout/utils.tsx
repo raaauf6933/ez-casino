@@ -41,13 +41,13 @@ export const parseAgentPayout = (
   response: AxiosResponse<any, any> | undefined
 ) => {
   return response?.data?.payout?.agent_payouts.map((agent_payout: any) => ({
-    id: agent_payout.id,
-    game_code: agent_payout?.agent?.game_code,
-    name: `${agent_payout?.agent?.first_name} ${agent_payout?.agent?.last_name}`,
-    initial_salary: currencyFormat(agent_payout?.initial_salary),
-    sub_agent_salary: currencyFormat(agent_payout?.sub_agent_salary),
     admin_fee: currencyFormat(agent_payout?.admin_fee),
-    total_salary: currencyFormat(agent_payout?.total_salary),
-    status: agent_payout?.status
+    game_code: agent_payout?.agent?.game_code,
+    id: agent_payout.id,
+    initial_salary: currencyFormat(agent_payout?.initial_salary),
+    name: `${agent_payout?.agent?.first_name} ${agent_payout?.agent?.last_name}`,
+    status: agent_payout?.status,
+    sub_agent_salary: currencyFormat(agent_payout?.sub_agent_salary),
+    total_salary: currencyFormat(agent_payout?.total_salary)
   }));
 };
