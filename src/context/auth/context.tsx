@@ -51,16 +51,6 @@ export const AuthContextProvider: React.FC<AuthContextProvideProps> = ({
     }
   });
 
-  const [verifyToken] = makeHttpPost({
-    onError: e => {
-      if (e.response?.data?.code === "TOKEN_EXPIRED") {
-        logout();
-      } else {
-        logout();
-      }
-    }
-  });
-
   const userLogin: any = async (formData: {
     username: string;
     password: string;
@@ -78,6 +68,10 @@ export const AuthContextProvider: React.FC<AuthContextProvideProps> = ({
     removeTokens();
     navigate("/");
   };
+
+  const [verifyToken] = makeHttpPost({
+    onError: logout
+  });
 
   const refreshToken = async () => {
     await verifyToken({

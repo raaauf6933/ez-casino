@@ -13,40 +13,42 @@ const AppLayout = (props: { children: React.ReactNode }): JSX.Element => {
 
   return (
     <>
-      <Box sx={{ minHeight: "100vh" }}>
-        <AppHeader />
-        <AppStateProgress />
+      {/* <Box
+      // sx={{ minHeight: "100vh" }}
+      > */}
+      <AppHeader />
+      <AppStateProgress />
+
+      <div
+        style={{
+          display: "flex",
+          flexGrow: 2
+        }}
+      >
+        <Hidden smDown>
+          <SideMenu />
+        </Hidden>
         <div
           style={{
             display: "flex",
-            height: "100vh"
+            justifyContent: "center",
+            width: "100%"
           }}
         >
-          <Hidden smDown>
-            <SideMenu />
-          </Hidden>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-
-              width: "100%"
+          <Box
+            component="main"
+            sx={{
+              maxWidth: "1024px",
+              overflow: "auto",
+              // width: "",
+              padding: "1em 1em 1em 1em"
             }}
           >
-            <Box
-              component="main"
-              sx={{
-                maxWidth: "1024px",
-                overflow: "auto",
-                // width: "",
-                padding: "1em 1em 1em 1em"
-              }}
-            >
-              {children}
-            </Box>
-          </div>
+            {children}
+          </Box>
         </div>
-      </Box>
+      </div>
+      {/* </Box> */}
     </>
   );
 };

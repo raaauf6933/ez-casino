@@ -21,7 +21,7 @@ const AppHeader = (): JSX.Element => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box>
       <AppBar
         position="static"
         style={{

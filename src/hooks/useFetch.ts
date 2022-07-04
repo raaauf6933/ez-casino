@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from "axios";
 import AppStateContext from "context/appState/context";
 import { AppStateActionType } from "types";
 import { getTokens } from "context/auth/handlers";
-import AuthContext, { useAuth } from "context/auth/context";
+import { useAuth } from "context/auth/context";
 axios.defaults.baseURL = process.env.REACT_APP_API_BASEURL;
 
 interface useFetchReturnType {
@@ -23,7 +23,7 @@ const useFetch = (
 ): useFetchReturnType => {
   const user = useAuth();
   const { dispatch } = useContext(AppStateContext);
-  const { tokenRefresh } = useContext(AuthContext);
+  // const { tokenRefresh } = useContext(AuthContext);
   const [response, setResponse] = useState<AxiosResponse | undefined>(
     undefined
   );
@@ -43,7 +43,7 @@ const useFetch = (
     dispatch({ type: AppStateActionType.START_LOADING });
     setloading(true);
     try {
-      await tokenRefresh();
+      // await tokenRefresh();
 
       const result = await axios.request(params);
       setResponse(result);
@@ -51,9 +51,9 @@ const useFetch = (
       const typedError = err as AxiosError;
       setError(typedError);
 
-      if (typedError.response?.data.data?.code === "TOKEN_EXPIRED") {
+      if (typedError.response?.data?.code === "TOKEN_EXPIRED") {
         user.logout();
-      } else if (typedError.response?.data.data?.code === "INVALID_TOKEN") {
+      } else if (typedError.response?.data?.code === "INVALID_TOKEN") {
         user.logout();
       }
     } finally {

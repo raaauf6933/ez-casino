@@ -1,4 +1,4 @@
-export const TOKEN_KEY = "auth_token";
+export const TOKEN_KEY = "AUTH_";
 export const CSRF_KEY = "csrf_token";
 
 export const isAuthenticated = () => {
