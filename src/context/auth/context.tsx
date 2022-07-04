@@ -2,8 +2,8 @@ import { LoginFormData } from "auth/views/Login";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { LOGIN } from "./api";
-import { setToken, isAuthenticated, removeTokens, getToken } from "./handlers";
+import { LOGIN, VERIFY_TOKEN } from "./api";
+import { setToken, isAuthenticated, removeTokens, getTokens } from "./handlers";
 import jwt_decode from "jwt-decode";
 import { UserTypeEnum } from "types";
 import makeHttpPost from "hooks/makeHttpPost";
@@ -46,8 +46,18 @@ export const AuthContextProvider: React.FC<AuthContextProvideProps> = ({
   const navigate = useNavigate();
   const [login] = makeHttpPost({
     onComplete: e => {
-      setToken(e?.data?.token);
+      setToken(e?.data?.token, e?.data?.refreshToken);
       navigate("/");
+    }
+  });
+
+  const [verifyToken] = makeHttpPost({
+    onError: e => {
+      if (e.response?.data?.code === "TOKEN_EXPIRED") {
+        logout();
+      } else {
+        logout();
+      }
     }
   });
 
@@ -69,8 +79,18 @@ export const AuthContextProvider: React.FC<AuthContextProvideProps> = ({
     navigate("/");
   };
 
+  const refreshToken = async () => {
+    await verifyToken({
+      data: { refreshToken: getTokens().refreshToken },
+      method: "POST",
+      url: VERIFY_TOKEN
+    });
+  };
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, logout, userLogin }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, logout, tokenRefresh: refreshToken, userLogin }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -82,12 +102,13 @@ export const useAuth = () => {
   return {
     isAuthenticated: auth?.isAuthenticated(),
     logout: auth.logout,
+    tokenRefresh: auth?.tokenRefresh,
     userLogin: auth?.userLogin
   };
 };
 
 export const useUser = (): UseUserInterface | null => {
-  const token = getToken();
+  const token = getTokens().token;
   return token ? jwt_decode(token) : null;
 };
 

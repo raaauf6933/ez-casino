@@ -1,6 +1,7 @@
-import { Grid } from "@mui/material";
+import { Grid, Skeleton } from "@mui/material";
 import PageHeader from "components/PageHeader";
 import React from "react";
+import { maybe } from "utils/misc";
 import PayoutBatchDetails from "../PayoutBatchDetails";
 import PayoutBatchInfo from "../PayoutBatchInfo";
 
@@ -14,7 +15,9 @@ const DetailsPage: React.FC<DetailsPageProps> = props => {
 
   return (
     <>
-      <PageHeader title="22" />
+      <PageHeader
+        title={maybe(() => batchInfo.id, <Skeleton variant="text" />)}
+      />
       <Grid container spacing={2}>
         <Grid item xs={12} sm={12} md={8} lg={8}>
           <PayoutBatchDetails data={agentPayouts} />

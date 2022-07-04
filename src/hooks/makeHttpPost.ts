@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 import AppStateContext from "context/appState/context";
-import { getToken } from "context/auth/handlers";
+import { useAuth } from "context/auth/context";
+import { getTokens } from "context/auth/handlers";
 import { useContext, useState } from "react";
 import { AppStateActionType } from "types";
 
@@ -22,13 +23,14 @@ type MakeHttpPostReturnType = [
 ];
 
 const makeHttpPost = (props: MakeHttpPostInterface): MakeHttpPostReturnType => {
+  const user = useAuth();
   const { onComplete, onError } = props;
   const { dispatch } = useContext(AppStateContext);
   const [response, setResponse] = useState<AxiosResponse | any>(undefined);
   const [error, setError] = useState<AxiosError | any>();
   const [loading, setloading] = useState<boolean>(false);
 
-  const token = getToken();
+  const token = getTokens().token;
 
   const callFn = async (params: AxiosRequestConfig): Promise<unknown> => {
     dispatch({ type: AppStateActionType.START_LOADING });
@@ -51,6 +53,13 @@ const makeHttpPost = (props: MakeHttpPostInterface): MakeHttpPostReturnType => {
     } catch (err) {
       const typedError = err as AxiosError;
       setError(typedError);
+
+      if (typedError.response?.data.data?.code === "TOKEN_EXPIRED") {
+        user.logout();
+      } else if (typedError.response?.data.data?.code === "INVALID_TOKEN") {
+        user.logout();
+      }
+
       if (onError && err) {
         onError(typedError);
       }

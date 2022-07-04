@@ -37,6 +37,18 @@ const AgentDrawerDetails: React.FC<AgentDrawerDetailsProps> = props => {
             ) : (
               <TextField
                 fullWidth
+                value={agent?.username}
+                size="small"
+                label="Username"
+              />
+            )}
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            {loading ? (
+              <Skeleton variant="text" height={30} />
+            ) : (
+              <TextField
+                fullWidth
                 value={agent?.first_name}
                 size="small"
                 label="First Name"
