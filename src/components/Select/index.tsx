@@ -20,6 +20,7 @@ interface SelectComponentProps {
   hasDefaultNone?: any;
   error?: boolean;
   helperText?: string;
+  disabled?: boolean;
 }
 
 const SelectComponent: React.FC<SelectComponentProps> = ({
@@ -31,7 +32,8 @@ const SelectComponent: React.FC<SelectComponentProps> = ({
   margin,
   hasDefaultNone,
   error,
-  helperText
+  helperText,
+  disabled
 }) => {
   return (
     <>
@@ -49,6 +51,7 @@ const SelectComponent: React.FC<SelectComponentProps> = ({
           labelId="demo-simple-select-autowidth-label"
           onChange={onChange}
           error={error}
+          disabled={disabled}
         >
           {/* <MenuItem value={"ACT"}>
             <em>ACTIVATE</em>

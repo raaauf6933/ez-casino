@@ -180,6 +180,11 @@ const CreatePage: React.FC<CreatePageProps> = props => {
                     helperText={
                       validationError.usertype ? validationError.usertype : null
                     }
+                    disabled={
+                      type === "edit" && data?.usertype === "SUPER_USER"
+                        ? true
+                        : false
+                    }
                     choices={[
                       {
                         label: "SUPER USER",
