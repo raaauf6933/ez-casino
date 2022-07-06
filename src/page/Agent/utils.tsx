@@ -38,8 +38,22 @@ export const columns: ColumnType[] = [
   }
 ];
 
-export const parseAgentList = (response: AxiosResponse<any, any> | undefined) =>{
+export const subAgentTableColumns: ColumnType[] = [
+  {
+    key: 1,
+    label: "Game ID",
+    path: "game_id"
+  },
+  {
+    key: 1,
+    label: "Name",
+    path: "name"
+  }
+];
 
+export const parseAgentList = (
+  response: AxiosResponse<any, any> | undefined
+) => {
   return response?.data?.data.map((agent: Agent) => ({
     agent_name: `${agent.first_name} ${agent.last_name}`,
     club_name: agent?.Club?.club_name ? (
@@ -54,5 +68,14 @@ export const parseAgentList = (response: AxiosResponse<any, any> | undefined) =>
     id: agent.id,
     status: <StatusLabel status={agent.status} />
   }));
+};
 
-}
+export const parseSubAgentList = (subAgents: any[]) => {
+  return (
+    subAgents &&
+    subAgents.map((subAgent: Agent) => ({
+      game_id: subAgent.game_code,
+      name: `${subAgent.first_name} ${subAgent.last_name}`
+    }))
+  );
+};

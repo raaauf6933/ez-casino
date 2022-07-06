@@ -1,14 +1,15 @@
-import { SwipeableDrawer } from "@mui/material";
+import { SwipeableDrawer, SwipeableDrawerProps } from "@mui/material";
 import * as React from "react";
 
-interface DrawerProps {
+interface DrawerProps extends Omit<SwipeableDrawerProps, "onOpen"> {
   children: React.ReactNode;
   open: boolean;
   onClose: () => void;
+  onOpen?: any;
 }
 
 const Drawer: React.FC<DrawerProps> = props => {
-  const { children, open, onClose } = props;
+  const { children, open, onClose, ...rest } = props;
 
   const getState = () => (event: any) => {
     if (
@@ -27,6 +28,7 @@ const Drawer: React.FC<DrawerProps> = props => {
           open={open}
           onClose={onClose}
           onOpen={getState()}
+          {...rest}
         >
           {children}
         </SwipeableDrawer>

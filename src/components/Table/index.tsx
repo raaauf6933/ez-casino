@@ -19,10 +19,11 @@ interface TableProps {
   data: any[];
   loading: boolean;
   onRowClick?: (id: string) => void;
+  minWidth?: number;
 }
 
 const Table: React.FC<TableProps> = props => {
-  const { columns, data, loading, onRowClick } = props;
+  const { columns, data, loading, onRowClick, minWidth } = props;
   const classes = useStyles();
 
   const [state, setState] = React.useState({
@@ -59,7 +60,10 @@ const Table: React.FC<TableProps> = props => {
     <>
       {/* <TableContainer component={Paper} className={classes.root}> */}
       <div className={classes.root}>
-        <TableComponent sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableComponent
+          sx={{ minWidth: minWidth ? minWidth : "unset" }}
+          aria-label="simple table"
+        >
           <TableHead>
             <TableRow>
               {filterColumns.map(thead => (
@@ -118,9 +122,9 @@ const Table: React.FC<TableProps> = props => {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        nextIconButtonProps={{
-          disabled: loading
-        }}
+        // nextIconButtonProps={{
+        //   disabled: loading
+        // }}
         SelectProps={{
           disabled: loading
         }}
