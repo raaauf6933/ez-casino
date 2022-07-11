@@ -82,7 +82,7 @@ const PayoutList: React.FC<PayoutListProps> = props => {
       <ListPage
         columns={columns}
         data={batch_list}
-        onUploadPayout={() => openModal("uploadPayoutBatch")}
+        onUploadPayout={() => openModal("dialog", "uploadPayoutBatch")}
         onRowClick={id => navigate(payoutPath(id))}
       />
       <ActionDialog

@@ -9,7 +9,10 @@ export type Dialog<TDialog extends string> = Partial<{
 type CreateCloseModal<
   TAction extends string,
   TParams extends Dialog<TAction>
-> = [(action: TAction, newParams?: TParams) => void, () => void];
+> = [
+  (type: "drawer" | "dialog", action: TAction, newParams?: TParams) => void,
+  () => void
+];
 
 function createDialogActionHandlers<
   TAction extends string,
@@ -25,6 +28,7 @@ function createDialogActionHandlers<
       url({
         ...params,
         action: undefined,
+        drawerAction: undefined,
         id: undefined,
         ids: undefined
       }),
@@ -32,14 +36,30 @@ function createDialogActionHandlers<
         replace: true
       }
     );
-  const open = (action: TAction, newParams?: TParams) =>
-    navigate(
-      url({
-        ...params,
-        ...newParams,
-        action
-      })
-    );
+  const open = (
+    type: "drawer" | "dialog",
+    action: TAction,
+    newParams?: TParams
+  ) => {
+    if (type === "dialog") {
+      navigate(
+        url({
+          ...params,
+          ...newParams,
+          action
+        })
+      );
+    } else {
+      navigate(
+        url({
+          ...params,
+          ...newParams,
+          drawerAction: action
+        })
+      );
+    }
+    return;
+  };
 
   return [open, close];
 }

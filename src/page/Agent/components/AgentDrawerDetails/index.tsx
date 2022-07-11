@@ -1,8 +1,17 @@
-import { Box, Grid, TextField, Typography, Skeleton } from "@mui/material";
+import {
+  Box,
+  Grid,
+  TextField,
+  Typography,
+  Skeleton,
+  Button
+} from "@mui/material";
 import Drawer from "components/Drawer";
 import Table from "components/Table";
+import { useUser } from "context/auth/context";
 import { parseSubAgentList, subAgentTableColumns } from "page/Agent/utils";
 import * as React from "react";
+import { StatusType, UserTypeEnum } from "types";
 
 interface AgentDrawerDetailsProps {
   data?: any;
@@ -10,12 +19,25 @@ interface AgentDrawerDetailsProps {
   onClose: () => void;
   agent: any;
   loading: boolean;
+  onUpdateStatus: (newStatus: StatusType) => void;
 }
 
 const AgentDrawerDetails: React.FC<AgentDrawerDetailsProps> = props => {
-  const { open, onClose, agent, loading: agentLoading } = props;
-
+  const { open, onClose, agent, loading: agentLoading, onUpdateStatus } = props;
+  const user = useUser();
   const loading = agentLoading || !agent;
+
+  const displayActionArea = () => {
+    if (
+      user?.usertype === UserTypeEnum.CLUB_ADMIN &&
+      agent?.status === StatusType.FOR_APPROVAL
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <Drawer
       open={open}
@@ -107,6 +129,28 @@ const AgentDrawerDetails: React.FC<AgentDrawerDetailsProps> = props => {
           />
         </Box>
       </Box>
+      {displayActionArea() ? (
+        <Box padding={3} display="flex" flexDirection="column">
+          <Button
+            fullWidth
+            variant="contained"
+            sx={{
+              marginBottom: 1.5
+            }}
+            onClick={() => onUpdateStatus(StatusType.ACTIVE)}
+          >
+            APPROVE
+          </Button>
+          <Button
+            fullWidth
+            variant="outlined"
+            color="error"
+            onClick={() => onUpdateStatus(StatusType.REJECT)}
+          >
+            Reject
+          </Button>
+        </Box>
+      ) : null}
     </Drawer>
   );
 };

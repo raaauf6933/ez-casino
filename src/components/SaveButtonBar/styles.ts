@@ -5,6 +5,13 @@ const newTheme = theme();
 
 export default makeStyles(
   () => ({
+    auto: {
+      bottom: 0,
+      marginTop: "1em",
+      maxWidth: "1024px",
+      position: "unset",
+      width: "100%"
+    },
     root: {
       bottom: 0,
       maxWidth: "1024px",

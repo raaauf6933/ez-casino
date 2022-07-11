@@ -7,15 +7,21 @@ import SearchBar from "components/SearchBar";
 import { useNavigate } from "react-router-dom";
 import { agentCreatePath } from "page/Agent/url";
 import RequirePermission from "components/RequirePermission";
+import FilterBar from "components/FilterBar";
 
 interface ListPageProps {
   columns: ColumnType[];
   data: any[];
   onRowClick: (id: string) => void;
+  onTabChange: (data: number) => void;
+  currentTab: number;
+  tabs: any[];
+  loading: boolean;
 }
 
 const ListPage: React.FC<ListPageProps> = props => {
-  const { columns, data, onRowClick } = props;
+  const { columns, data, onRowClick, onTabChange, currentTab, tabs, loading } =
+    props;
   const [searchValue, setSearchValue] = useState<string>("");
   const navigate = useNavigate();
 
@@ -40,6 +46,12 @@ const ListPage: React.FC<ListPageProps> = props => {
         }
       />
       <Card>
+        <FilterBar
+          tabs={tabs}
+          currentTab={currentTab}
+          onTabChange={onTabChange}
+          loading={loading}
+        />
         <SearchBar
           label="Search Agent"
           value={searchValue}
@@ -48,7 +60,7 @@ const ListPage: React.FC<ListPageProps> = props => {
         <Table
           columns={columns}
           data={data}
-          loading={false}
+          loading={loading}
           onRowClick={onRowClick}
         />
       </Card>

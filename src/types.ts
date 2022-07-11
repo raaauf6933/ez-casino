@@ -1,5 +1,6 @@
 export type Dialog<TDialog extends string> = Partial<{
   action: TDialog;
+  drawerAction: TDialog;
 }>;
 
 export interface ColumnType {
@@ -25,5 +26,7 @@ export enum UserTypeEnum {
 
 export enum StatusType {
   ACTIVE = "ACTIVE",
-  INACTIVE = "INACTIVE"
+  INACTIVE = "INACTIVE",
+  FOR_APPROVAL = "FOR_APPROVAL",
+  REJECT = "REJECT"
 }

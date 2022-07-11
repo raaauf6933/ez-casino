@@ -7,6 +7,7 @@ import { setToken, isAuthenticated, removeTokens, getTokens } from "./handlers";
 import jwt_decode from "jwt-decode";
 import { UserTypeEnum } from "types";
 import makeHttpPost from "hooks/makeHttpPost";
+import { toast } from "react-toastify";
 
 interface AuthContextInterface {
   userLogin: (data: LoginFormData) => {
@@ -48,6 +49,11 @@ export const AuthContextProvider: React.FC<AuthContextProvideProps> = ({
     onComplete: e => {
       setToken(e?.data?.token, e?.data?.refreshToken);
       navigate("/");
+    },
+    onError: e => {
+      if (e.response?.data.code === "USER_INACTIVE") {
+        toast.error(e.response?.data?.message);
+      }
     }
   });
 

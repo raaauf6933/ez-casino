@@ -34,6 +34,14 @@ const AgentFormPage: React.FC<AgentFormPageProps> = props => {
     username: ""
   };
 
+  const displayStatusComponent = () => {
+    if (user?.usertype === UserTypeEnum.CLUB_ADMIN) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <>
       <PageHeader title="Create Agent" />
@@ -170,30 +178,32 @@ const AgentFormPage: React.FC<AgentFormPageProps> = props => {
                         </FormGroup>
                       </Grid>
                     ) : null}
-                    <Grid item xs={12} sm={12} md={6}>
-                      <FormGroup>
-                        <FormControlLabel
-                          control={
-                            <Switch
-                              checked={true}
-                              onChange={e =>
-                                change({
-                                  target: {
-                                    name: "status",
-                                    value: e.target.checked
-                                      ? StatusType.ACTIVE
-                                      : StatusType.INACTIVE
-                                  }
-                                })
-                              }
-                              name="status"
-                              inputProps={{ "aria-label": "controlled" }}
-                            />
-                          }
-                          label="Active Status"
-                        />
-                      </FormGroup>
-                    </Grid>
+                    {displayStatusComponent() ? (
+                      <Grid item xs={12} sm={12} md={6}>
+                        <FormGroup>
+                          <FormControlLabel
+                            control={
+                              <Switch
+                                checked={true}
+                                onChange={e =>
+                                  change({
+                                    target: {
+                                      name: "status",
+                                      value: e.target.checked
+                                        ? StatusType.ACTIVE
+                                        : StatusType.INACTIVE
+                                    }
+                                  })
+                                }
+                                name="status"
+                                inputProps={{ "aria-label": "controlled" }}
+                              />
+                            }
+                            label="Active Status"
+                          />
+                        </FormGroup>
+                      </Grid>
+                    ) : null}
                   </Grid>
                 </Card>
               </Grid>
