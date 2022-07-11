@@ -20,13 +20,13 @@ export default makeStyles(
       fontWeight: "600 !important"
     },
     tabRoot: {
+      "& .MuiTab-root": {
+        fontWeight: 600
+      },
       minWidth: "80px",
       opacity: 1,
       paddingTop: theme.spacing(1),
-      textTransform: "initial",
-      "& .MuiTab-root": {
-        fontWeight: 600
-      }
+      textTransform: "initial"
     }
   }),
   {
