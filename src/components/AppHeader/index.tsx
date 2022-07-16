@@ -6,11 +6,17 @@ import { useAuth, useUser } from "context/auth/context";
 import { accountDetailsUrl } from "page/AccountDetails/url";
 import { useNavigate } from "react-router-dom";
 import Popper from "./components/Popper";
-// import Button from "@mui/material/Button";
-// import IconButton from "@mui/material/IconButton";
-// import MenuIcon from "@mui/icons-material/Menu";
 
-const AppHeader = (): JSX.Element => {
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import { Hidden } from "@mui/material";
+
+interface AppHeaderProps {
+  setOpenMobileDrawer: (data: boolean) => void;
+}
+
+const AppHeader: React.FC<AppHeaderProps> = (props: AppHeaderProps) => {
+  const { setOpenMobileDrawer } = props;
   const { logout } = useAuth();
   const navigate = useNavigate();
   const user = useUser();
@@ -29,15 +35,18 @@ const AppHeader = (): JSX.Element => {
         }}
       >
         <Toolbar>
-          {/* <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton> */}
+          <Hidden smUp>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={() => setOpenMobileDrawer(true)}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Hidden>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             EZ - CASINO
           </Typography>

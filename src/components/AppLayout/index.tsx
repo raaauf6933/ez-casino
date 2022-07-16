@@ -5,18 +5,19 @@ import SideMenu from "../StaticDrawer";
 // import { useTheme } from "@mui/material/styles";
 // import useMediaQuery from "@mui/material/useMediaQuery";
 import AppStateProgress from "components/AppStateProgress";
+import MobileDrawer from "./components/Drawer";
 
 const AppLayout = (props: { children: React.ReactNode }): JSX.Element => {
   const { children } = props;
-  // const theme = useTheme();
-  // const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const [openMobileDrawer, setOpenMobileDrawer] =
+    React.useState<boolean>(false);
 
   return (
     <>
       {/* <Box
       // sx={{ minHeight: "100vh" }}
       > */}
-      <AppHeader />
+      <AppHeader setOpenMobileDrawer={setOpenMobileDrawer} />
       <AppStateProgress />
 
       <div
@@ -27,6 +28,9 @@ const AppLayout = (props: { children: React.ReactNode }): JSX.Element => {
       >
         <Hidden smDown>
           <SideMenu />
+        </Hidden>
+        <Hidden smUp>
+          <MobileDrawer open={openMobileDrawer} setOpen={setOpenMobileDrawer} />
         </Hidden>
         <div
           style={{

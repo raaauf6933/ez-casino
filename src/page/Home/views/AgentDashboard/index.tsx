@@ -21,7 +21,7 @@ const AgentDashboard: React.FC<AgentDashboardProps> = () => {
   return (
     <>
       <Grid container spacing={2}>
-        <Grid item md={6}>
+        <Grid item xs={12} sm={12} md={6}>
           <Card>
             <Box display="flex">
               <div className={classes.icons}>
@@ -46,7 +46,7 @@ const AgentDashboard: React.FC<AgentDashboardProps> = () => {
             </Box>
           </Card>
         </Grid>
-        <Grid item md={6}>
+        <Grid item xs={12} sm={12} md={6}>
           <Card>
             <Box display="flex">
               <div className={classes.icons}>
@@ -71,7 +71,7 @@ const AgentDashboard: React.FC<AgentDashboardProps> = () => {
             </Box>
           </Card>
         </Grid>
-        <Grid item md={12}>
+        <Grid item xs={12} sm={12} md={12}>
           <Card>
             <Box display="flex">
               <div className={classes.icons}>
