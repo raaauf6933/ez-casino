@@ -16,7 +16,7 @@ interface ActionDialogProps {
   onClose: () => void;
   title: string;
   onSubmit: () => void;
-  label: {
+  label?: {
     save?: string;
   };
 }

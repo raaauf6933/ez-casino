@@ -9,16 +9,17 @@ import {
 interface CardProps {
   title?: string;
   children: React.ReactNode;
+  action?: React.ReactNode;
 }
 
 const Card: React.FC<CardProps> = props => {
-  const { title, children } = props;
+  const { title, children, action } = props;
 
   return (
     <CardMui>
       {title ? (
         <>
-          <CardHeader title={<span>{title}</span>} />
+          <CardHeader title={<span>{title}</span>} action={action} />
           <Divider />
         </>
       ) : null}

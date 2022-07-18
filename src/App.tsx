@@ -94,7 +94,10 @@ const AppRoutes = (): JSX.Element => {
               <Route path=":id" element={<UserEdit />} />
             </Route>
             <Route path="account-details">
-              <Route path=":id" element={<AccountDetails />} />
+              <Route
+                path=":id"
+                element={<AccountDetails params={queryParams} />}
+              />
             </Route>
             {/* 
           <Route path="/payout" element={<Payout />} />
