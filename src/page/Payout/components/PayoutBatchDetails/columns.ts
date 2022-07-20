@@ -28,11 +28,16 @@ const PayoutBatchDetailsColumn: ColumnType[] = [
   },
   {
     key: 6,
+    label: "Deduction",
+    path: "deduction"
+  },
+  {
+    key: 7,
     label: "Total Salary",
     path: "total_salary"
   },
   {
-    key: 7,
+    key: 8,
     label: "Status",
     path: "status"
   }

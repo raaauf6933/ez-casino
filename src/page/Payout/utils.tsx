@@ -1,7 +1,9 @@
 import { AxiosResponse } from "axios";
+import StatusLabel from "components/StatusLabel";
 import moment from "moment";
 import { ColumnType } from "types";
 import { currencyFormat } from "utils/currencyFormat";
+import { maybe } from "utils/misc";
 
 export const columns: ColumnType[] = [
   {
@@ -33,7 +35,7 @@ export const parseBatchPayoutList = (
     date_created: moment(batch.createdAt).format("LL"),
     generated_by: `${batch?.user?.first_name} ${batch?.user?.last_name}`,
     id: batch.id,
-    status: batch.status
+    status: <StatusLabel status={batch.status} />
   }));
 };
 
@@ -42,11 +44,12 @@ export const parseAgentPayout = (
 ) => {
   return response?.data?.payout?.agent_payouts.map((agent_payout: any) => ({
     admin_fee: currencyFormat(agent_payout?.admin_fee),
+    deduction: maybe(() => currencyFormat(agent_payout.deduction), "0.00"),
     game_code: agent_payout?.agent?.game_code,
     id: agent_payout.id,
     initial_salary: currencyFormat(agent_payout?.initial_salary),
     name: `${agent_payout?.agent?.first_name} ${agent_payout?.agent?.last_name}`,
-    status: agent_payout?.status,
+    status: <StatusLabel status={agent_payout?.status} />,
     sub_agent_salary: currencyFormat(agent_payout?.sub_agent_salary),
     total_salary: currencyFormat(agent_payout?.total_salary)
   }));

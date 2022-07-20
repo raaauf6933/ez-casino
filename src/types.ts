@@ -30,3 +30,13 @@ export enum StatusType {
   FOR_APPROVAL = "FOR_APPROVAL",
   REJECT = "REJECT"
 }
+
+export enum BatchPayoutStatusType {
+  COMPLETED = "COMPLETED",
+  ONGOING = "ONGOING"
+}
+
+export enum AgentPayoutStatus {
+  PAID = "PAID",
+  PENDING = "PENDING"
+}

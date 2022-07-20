@@ -37,6 +37,14 @@ export const ErrorPayoutHandlers = (
         );
         break;
       default:
+        toast.error(
+          <>
+            <Typography variant="body1" fontWeight={600}>
+              {data?.error}
+            </Typography>
+            <Typography variant="caption">{data?.message}</Typography>
+          </>
+        );
         break;
     }
   }
