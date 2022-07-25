@@ -40,3 +40,7 @@ export enum AgentPayoutStatus {
   PAID = "PAID",
   PENDING = "PENDING"
 }
+
+export interface Node {
+  id: string;
+}

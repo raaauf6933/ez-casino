@@ -1,5 +1,10 @@
 import useFetch from "hooks/useFetch";
-import { GET_AGENT, GET_AGENTS, UPDATE_AGENT_STATUS } from "page/Agent/api";
+import {
+  CHANGE_UPPERAGENT,
+  GET_AGENT,
+  GET_AGENTS,
+  UPDATE_AGENT_STATUS
+} from "page/Agent/api";
 import ListPage from "page/Agent/components/ListPage";
 import * as React from "react";
 import { columns, parseAgentList } from "./../../utils";
@@ -16,6 +21,9 @@ import {
 import ActionDialog from "components/ActionDialog";
 import makeHttpPost from "hooks/makeHttpPost";
 import { toast } from "react-toastify";
+import ChangeAgentDialog from "page/Agent/components/ChangeAgentDialog";
+import useBulkActions from "hooks/useBulkActions";
+import { ErrorChangeUpperAgentHandler } from "page/Agent/handlers";
 
 interface AgentListProps {
   params: AgentListUrlQueryParams;
@@ -41,7 +49,11 @@ const AgentList: React.FC<AgentListProps> = props => {
     refetchList();
   }, [params.status]);
 
-  const { response: agent, loading: loadingAgent } = useFetch(
+  const {
+    response: agent,
+    loading: loadingAgent,
+    refetch: refetchAgent
+  } = useFetch(
     {
       params: {
         id: params.id
@@ -53,6 +65,8 @@ const AgentList: React.FC<AgentListProps> = props => {
     }
   );
 
+  const bulkActions = useBulkActions([]);
+
   const [openAction, closeAction] = createDialogActionHandlers<
     AgentListUrlDialog,
     AgentListUrlQueryParams
@@ -62,11 +76,25 @@ const AgentList: React.FC<AgentListProps> = props => {
     onComplete: () => {
       toast("Changes Saved!");
       refetchList();
-      closeAction();
+      closeAction("dialog");
     },
     onError: err => {
       toast.error(err.response?.data?.message);
     }
+  });
+
+  const [changeUpperAgent] = makeHttpPost({
+    onComplete: () => {
+      toast("Changes Saved!");
+      refetchList();
+      bulkActions.reset();
+      closeAction("dialog");
+
+      if (params.id) {
+        refetchAgent();
+      }
+    },
+    onError: err => ErrorChangeUpperAgentHandler(err.response)
   });
 
   const agentList = parseAgentList(response);
@@ -121,6 +149,16 @@ const AgentList: React.FC<AgentListProps> = props => {
     });
   };
 
+  const handleChangeUpperAgent = async (formData: any) => {
+    await changeUpperAgent({
+      data: {
+        agent: formData.agent.toString(),
+        subAgents: bulkActions.listElements
+      },
+      url: CHANGE_UPPERAGENT
+    });
+  };
+
   return (
     <>
       <ListPage
@@ -138,7 +176,7 @@ const AgentList: React.FC<AgentListProps> = props => {
       />
       <AgentDrawerDetails
         open={params.drawerAction === "agentDetails"}
-        onClose={closeAction}
+        onClose={() => closeAction("drawer")}
         agent={agent?.data}
         loading={loadingAgent}
         onUpdateStatus={(newStatus: StatusType) =>
@@ -146,10 +184,12 @@ const AgentList: React.FC<AgentListProps> = props => {
             newStatus
           })
         }
+        onChangeUpperAgent={() => openAction("dialog", "onChangeUpperAgent")}
+        {...bulkActions}
       />
       <ActionDialog
         open={params.action === "onUpdateStatus"}
-        onClose={closeAction}
+        onClose={() => closeAction("dialog")}
         title={params.newStatus === "ACTIVE" ? "Approve Agent" : "Reject Agent"}
         onSubmit={onUpdateAgentStatus}
         label={{
@@ -161,6 +201,20 @@ const AgentList: React.FC<AgentListProps> = props => {
           <b>{params.newStatus === "ACTIVE" ? "Approved" : "Reject"}</b>?
         </p>
       </ActionDialog>
+      {user?.usertype === UserTypeEnum.CLUB_ADMIN ? (
+        <ChangeAgentDialog
+          open={params.action === "onChangeUpperAgent"}
+          closeAction={() => {
+            closeAction("dialog");
+            bulkActions.reset();
+          }}
+          selectedAgents={bulkActions.listElements}
+          upperAgent={params.id}
+          agentList={agentList}
+          loading={loadingAgent}
+          onSubmit={handleChangeUpperAgent}
+        />
+      ) : null}
     </>
   );
 };

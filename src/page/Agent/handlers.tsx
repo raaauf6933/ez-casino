@@ -2,37 +2,22 @@ import { Typography } from "@mui/material";
 import { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 
-export const ErrorPayoutHandlers = (
+export const ErrorChangeUpperAgentHandler = (
   response: AxiosResponse<any, any> | undefined
 ) => {
   const data = response?.data;
 
   if (data?.code) {
     switch (data?.code) {
-      case "DATA_FORMAT":
+      case "INVALID_AGENT":
         toast.error(
           <>
             <Typography variant="body1" fontWeight={600}>
               {data?.error}
             </Typography>
-
-            <Typography variant="caption" fontWeight={500}>
-              {data?.message?.error}
-            </Typography>
-            <br />
             <Typography variant="caption">
-              ID: {data?.message?.game_id}
+              ID: {data?.message.game_id} <br /> Name: {data?.message.name}
             </Typography>
-          </>
-        );
-        break;
-      case "HEADERS":
-        toast.error(
-          <>
-            <Typography variant="body1" fontWeight={600}>
-              {data?.error}
-            </Typography>
-            <Typography variant="caption">{data?.message}</Typography>
           </>
         );
         break;
@@ -47,5 +32,11 @@ export const ErrorPayoutHandlers = (
         );
         break;
     }
+  } else {
+    toast.error(
+      <>
+        <Typography variant="caption">{data?.message}</Typography>
+      </>
+    );
   }
 };

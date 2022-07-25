@@ -11,7 +11,7 @@ type CreateCloseModal<
   TParams extends Dialog<TAction>
 > = [
   (type: "drawer" | "dialog", action: TAction, newParams?: TParams) => void,
-  () => void
+  (data: "dialog" | "drawer") => void
 ];
 
 function createDialogActionHandlers<
@@ -23,19 +23,46 @@ function createDialogActionHandlers<
   url: Url<TParams>,
   params: TParams
 ): CreateCloseModal<TAction, TParams> {
-  const close = () =>
-    navigate(
-      url({
-        ...params,
-        action: undefined,
-        drawerAction: undefined,
-        id: undefined,
-        ids: undefined
-      }),
-      {
-        replace: true
-      }
-    );
+  const close = (type: "dialog" | "drawer") => {
+    if (type === "dialog") {
+      navigate(
+        url({
+          ...params,
+          action: undefined,
+          id: undefined,
+          ids: undefined
+        }),
+        {
+          replace: true
+        }
+      );
+    } else if (type === "drawer") {
+      navigate(
+        url({
+          ...params,
+          drawerAction: undefined,
+          id: undefined,
+          ids: undefined
+        }),
+        {
+          replace: true
+        }
+      );
+    } else {
+      navigate(
+        url({
+          ...params,
+          action: undefined,
+          drawerAction: undefined,
+          id: undefined,
+          ids: undefined
+        }),
+        {
+          replace: true
+        }
+      );
+    }
+  };
   const open = (
     type: "drawer" | "dialog",
     action: TAction,

@@ -41,7 +41,7 @@ const PayoutList: React.FC<PayoutListProps> = props => {
 
   const [uploadPayout, uploadPayoutOpts] = makeHttpPost({
     onComplete: () => {
-      closeModal();
+      closeModal("dialog");
       setFiles([]);
       toast("Batch has been processed");
       refetch();
@@ -89,7 +89,7 @@ const PayoutList: React.FC<PayoutListProps> = props => {
         open={params.action === "uploadPayoutBatch"}
         onClose={() => {
           setFiles([]);
-          closeModal();
+          closeModal("dialog");
         }}
         title="Upload Batch Payout"
         label={{

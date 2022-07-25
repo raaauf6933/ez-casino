@@ -37,7 +37,7 @@ const AccountDetails: React.FC<AccountDetailsProps> = props => {
     onComplete: () => {
       toast("Password Changed, You must log-in again");
       user.logout();
-      closeAction();
+      closeAction("dialog");
     },
     onError: e => {
       if (e.response?.data?.code === "INVALID_USER") {
@@ -69,7 +69,7 @@ const AccountDetails: React.FC<AccountDetailsProps> = props => {
       <ChangePassswordDialog
         onSubmit={onChangePassword}
         open={params.action === "changePassword"}
-        onClose={closeAction}
+        onClose={() => closeAction("dialog")}
       />
     </>
   );

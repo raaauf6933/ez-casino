@@ -12,7 +12,10 @@ export const agentPath = (id: string) => urlJoin(agentSection, id);
 export const agentUrl = (id: string, params?: any) =>
   agentPath(encodeURIComponent(id)) + "?" + stringifyQs(params);
 
-export type AgentListUrlDialog = "agentDetails" | "onUpdateStatus";
+export type AgentListUrlDialog =
+  | "agentDetails"
+  | "onUpdateStatus"
+  | "onChangeUpperAgent";
 
 export type AgentListUrlQueryParams = Dialog<AgentListUrlDialog> & {
   id?: string;

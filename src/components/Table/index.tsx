@@ -13,6 +13,7 @@ import useStyles from "./style";
 import usePaginate from "hooks/usePaginate";
 import { renderCollection } from "utils/misc";
 import { Skeleton } from "@mui/material";
+import TableHeadBulk from "components/TableHeadBulk";
 
 interface TableProps {
   columns: ColumnType[];
@@ -20,12 +21,23 @@ interface TableProps {
   loading: boolean;
   onRowClick?: (id: string) => void;
   minWidth?: number;
+  selected?: string[];
+  toggleAll?: () => void;
+  toolbar?: React.ReactNode;
 }
 
 const Table: React.FC<TableProps> = props => {
-  const { columns, data, loading, onRowClick, minWidth } = props;
+  const {
+    columns,
+    data,
+    loading,
+    onRowClick,
+    minWidth,
+    toggleAll,
+    selected,
+    toolbar
+  } = props;
   const classes = useStyles();
-
   const [state, setState] = React.useState({
     currentPage: 0,
     pageSize: 10
@@ -47,14 +59,19 @@ const Table: React.FC<TableProps> = props => {
   // }
 
   const renderCell = (item: unknown, column: ColumnType): React.ReactNode => {
+    if (typeof item === "function") {
+      return null;
+    }
+
     if (column.content) {
-      return column.content;
+      return column.content(item);
     }
 
     return _.get(item, column.path);
   };
 
   const filterColumns = columns.filter(e => !e.hide);
+  const pageData = getPageData().data;
 
   return (
     <>
@@ -64,18 +81,31 @@ const Table: React.FC<TableProps> = props => {
           sx={{ minWidth: minWidth ? minWidth : "unset" }}
           aria-label="simple table"
         >
-          <TableHead>
-            <TableRow>
-              {filterColumns.map(thead => (
-                <TableCell key={thead.key}>
-                  <b>{thead.label}</b>
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
+          {toggleAll ? (
+            <TableHeadBulk
+              columns={filterColumns}
+              colSpan={filterColumns.length}
+              disabled={false}
+              items={pageData ? pageData : []}
+              selected={selected ? selected.length : 0}
+              toggleAll={toggleAll}
+              toolbar={toolbar}
+            />
+          ) : (
+            <TableHead>
+              <TableRow>
+                {filterColumns.map(thead => (
+                  <TableCell key={thead.key}>
+                    <b>{thead.label}</b>
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+          )}
+
           <TableBody>
             {renderCollection(
-              getPageData().data,
+              pageData,
               loading,
               item => (
                 <TableRow

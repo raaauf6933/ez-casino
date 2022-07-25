@@ -1,7 +1,8 @@
+import { Checkbox } from "@mui/material";
 import { AxiosResponse } from "axios";
 import StatusLabel from "components/StatusLabel";
 import moment from "moment";
-import { ColumnType } from "types";
+import { ColumnType, UserTypeEnum } from "types";
 import { Agent } from "./types";
 
 export const columns: ColumnType[] = [
@@ -38,18 +39,33 @@ export const columns: ColumnType[] = [
   }
 ];
 
-export const subAgentTableColumns: ColumnType[] = [
-  {
-    key: 1,
-    label: "Game ID",
-    path: "game_id"
-  },
-  {
-    key: 1,
-    label: "Name",
-    path: "name"
-  }
-];
+export const subAgentTableColumns = (
+  usertype: UserTypeEnum | null | undefined
+): ColumnType[] => {
+  return [
+    {
+      key: 1,
+      label: "",
+      path: "check_box",
+      hide: usertype !== UserTypeEnum.CLUB_ADMIN,
+      content: ({ toggle, isSelected, ...props }: any) => {
+        return (
+          <Checkbox checked={isSelected} onChange={() => toggle(props.id)} />
+        );
+      }
+    },
+    {
+      key: 2,
+      label: "Game ID",
+      path: "game_id"
+    },
+    {
+      key: 3,
+      label: "Name",
+      path: "name"
+    }
+  ];
+};
 
 export const parseAgentList = (
   response: AxiosResponse<any, any> | undefined
@@ -70,12 +86,23 @@ export const parseAgentList = (
   }));
 };
 
-export const parseSubAgentList = (subAgents: any[]) => {
+export const parseSubAgentList = (
+  subAgents: any[],
+  isChecked: (data: any) => boolean,
+  toggle: (data: string) => void
+) => {
   return (
     subAgents &&
-    subAgents.map((subAgent: Agent) => ({
-      game_id: subAgent.game_code,
-      name: `${subAgent.first_name} ${subAgent.last_name}`
-    }))
+    subAgents.map((subAgent: Agent) => {
+      const isSelected = subAgents ? isChecked(subAgent.id.toString()) : false;
+
+      return {
+        game_id: subAgent.game_code,
+        id: subAgent.id.toString(),
+        isSelected,
+        name: `${subAgent.first_name} ${subAgent.last_name}`,
+        toggle
+      };
+    })
   );
 };

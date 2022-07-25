@@ -4,7 +4,9 @@ import {
   TextField,
   Typography,
   Skeleton,
-  Button
+  Button,
+  IconButton,
+  Tooltip
 } from "@mui/material";
 import Drawer from "components/Drawer";
 import Table from "components/Table";
@@ -12,18 +14,33 @@ import { useUser } from "context/auth/context";
 import { parseSubAgentList, subAgentTableColumns } from "page/Agent/utils";
 import * as React from "react";
 import { StatusType, UserTypeEnum } from "types";
+import MoveUpIcon from "@mui/icons-material/MoveUp";
+import { useBulkActionsTypes } from "hooks/useBulkActions";
 
-interface AgentDrawerDetailsProps {
+interface AgentDrawerDetailsProps extends useBulkActionsTypes {
   data?: any;
   open: boolean;
   onClose: () => void;
   agent: any;
   loading: boolean;
   onUpdateStatus: (newStatus: StatusType) => void;
+  onChangeUpperAgent: () => void;
 }
 
 const AgentDrawerDetails: React.FC<AgentDrawerDetailsProps> = props => {
-  const { open, onClose, agent, loading: agentLoading, onUpdateStatus } = props;
+  const {
+    open,
+    onClose,
+    agent,
+    loading: agentLoading,
+    onUpdateStatus,
+    onChangeUpperAgent,
+    isSelected,
+    listElements,
+    toggle,
+    toggleAll,
+    reset
+  } = props;
   const user = useUser();
   const loading = agentLoading || !agent;
 
@@ -41,7 +58,10 @@ const AgentDrawerDetails: React.FC<AgentDrawerDetailsProps> = props => {
   return (
     <Drawer
       open={open}
-      onClose={onClose}
+      onClose={() => {
+        reset();
+        onClose();
+      }}
       sx={{
         "& .MuiDrawer-paper": {
           maxWidth: "414px"
@@ -123,8 +143,26 @@ const AgentDrawerDetails: React.FC<AgentDrawerDetailsProps> = props => {
           <Typography variant="h4">Sub-Agents</Typography>
           <Table
             // minWidth={414}
-            columns={subAgentTableColumns}
-            data={parseSubAgentList(agent?.sub_agents)}
+            toolbar={
+              <>
+                <Tooltip title="Change Upper Agent">
+                  <IconButton
+                    color="primary"
+                    aria-label="change upline agent"
+                    component="label"
+                    onClick={onChangeUpperAgent}
+                  >
+                    <MoveUpIcon />
+                  </IconButton>
+                </Tooltip>
+              </>
+            }
+            selected={listElements}
+            toggleAll={
+              user?.usertype === UserTypeEnum.CLUB_ADMIN ? toggleAll : undefined
+            }
+            columns={subAgentTableColumns(user?.usertype)}
+            data={parseSubAgentList(agent?.sub_agents, isSelected, toggle)}
             loading={false}
           />
         </Box>
