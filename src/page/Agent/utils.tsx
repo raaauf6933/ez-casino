@@ -44,15 +44,15 @@ export const subAgentTableColumns = (
 ): ColumnType[] => {
   return [
     {
-      key: 1,
-      label: "",
-      path: "check_box",
-      hide: usertype !== UserTypeEnum.CLUB_ADMIN,
       content: ({ toggle, isSelected, ...props }: any) => {
         return (
           <Checkbox checked={isSelected} onChange={() => toggle(props.id)} />
         );
-      }
+      },
+      hide: usertype !== UserTypeEnum.CLUB_ADMIN,
+      key: 1,
+      label: "",
+      path: "check_box"
     },
     {
       key: 2,
