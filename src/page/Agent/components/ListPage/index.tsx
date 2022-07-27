@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Table from "components/Table";
 import { Card, Button } from "@mui/material";
 import { ColumnType, UserTypeEnum } from "types";
@@ -17,12 +17,23 @@ interface ListPageProps {
   currentTab: number;
   tabs: any[];
   loading: boolean;
+  setSearch: (data: string) => void;
+  searchValue: string;
 }
 
 const ListPage: React.FC<ListPageProps> = props => {
-  const { columns, data, onRowClick, onTabChange, currentTab, tabs, loading } =
-    props;
-  const [searchValue, setSearchValue] = useState<string>("");
+  const {
+    columns,
+    data,
+    onRowClick,
+    onTabChange,
+    currentTab,
+    tabs,
+    loading,
+    searchValue,
+    setSearch
+  } = props;
+
   const navigate = useNavigate();
 
   return (
@@ -53,9 +64,9 @@ const ListPage: React.FC<ListPageProps> = props => {
           loading={loading}
         />
         <SearchBar
-          label="Search Agent"
+          label="Search Game ID"
           value={searchValue}
-          setValue={setSearchValue}
+          setValue={setSearch}
         />
         <Table
           columns={columns}

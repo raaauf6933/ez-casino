@@ -40,6 +40,7 @@ const useFetch = (
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const fetchData = async () => {
+    setResponse(undefined);
     dispatch({ type: AppStateActionType.START_LOADING });
     setloading(true);
     try {

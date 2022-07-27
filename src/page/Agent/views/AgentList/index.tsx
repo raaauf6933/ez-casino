@@ -35,6 +35,7 @@ const AgentList: React.FC<AgentListProps> = props => {
   const { params } = props;
   const user = useUser();
   const navigate = useNavigate();
+  const [search, setSearch] = React.useState<string>("");
 
   const {
     response,
@@ -42,6 +43,7 @@ const AgentList: React.FC<AgentListProps> = props => {
     loading
   } = useFetch({
     params: {
+      search: search,
       status: params?.status === "ALL" || undefined ? null : params.status
     },
     url: GET_AGENTS
@@ -49,7 +51,7 @@ const AgentList: React.FC<AgentListProps> = props => {
 
   React.useEffect(() => {
     refetchList();
-  }, [params.status]);
+  }, [params.status, search]);
 
   const {
     response: agent,
@@ -187,6 +189,8 @@ const AgentList: React.FC<AgentListProps> = props => {
   return (
     <>
       <ListPage
+        setSearch={setSearch}
+        searchValue={search}
         columns={columns.filter(e =>
           user?.usertype === UserTypeEnum.SUPER_USER
             ? e

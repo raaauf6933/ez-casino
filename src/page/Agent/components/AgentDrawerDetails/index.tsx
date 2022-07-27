@@ -44,7 +44,7 @@ const AgentDrawerDetails: React.FC<AgentDrawerDetailsProps> = props => {
   } = props;
   const user = useUser();
   const loading = agentLoading || !agent;
-  console.log(loading);
+
   const classes = useStyles(props);
   const displayActionArea = () => {
     if (
