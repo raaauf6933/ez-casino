@@ -15,7 +15,8 @@ export const agentUrl = (id: string, params?: any) =>
 export type AgentListUrlDialog =
   | "agentDetails"
   | "onUpdateStatus"
-  | "onChangeUpperAgent";
+  | "onChangeUpperAgent"
+  | "onEditAgent";
 
 export type AgentListUrlQueryParams = Dialog<AgentListUrlDialog> & {
   id?: string;

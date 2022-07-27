@@ -29,7 +29,6 @@ function createDialogActionHandlers<
         url({
           ...params,
           action: undefined,
-          id: undefined,
           ids: undefined
         }),
         {

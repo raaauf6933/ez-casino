@@ -3,6 +3,7 @@ import {
   CHANGE_UPPERAGENT,
   GET_AGENT,
   GET_AGENTS,
+  UPDATE_AGENT,
   UPDATE_AGENT_STATUS
 } from "page/Agent/api";
 import ListPage from "page/Agent/components/ListPage";
@@ -24,6 +25,7 @@ import { toast } from "react-toastify";
 import ChangeAgentDialog from "page/Agent/components/ChangeAgentDialog";
 import useBulkActions from "hooks/useBulkActions";
 import { ErrorChangeUpperAgentHandler } from "page/Agent/handlers";
+import EditAgentDialog from "page/Agent/components/EditAgentDialog";
 
 interface AgentListProps {
   params: AgentListUrlQueryParams;
@@ -97,6 +99,20 @@ const AgentList: React.FC<AgentListProps> = props => {
     onError: err => ErrorChangeUpperAgentHandler(err.response)
   });
 
+  const [updateAgent] = makeHttpPost({
+    onComplete: () => {
+      toast("Changes Saved!");
+      refetchList();
+      closeAction("dialog");
+      if (params.id) {
+        refetchAgent();
+      }
+    },
+    onError: err => {
+      toast.error(err.response?.data.message);
+    }
+  });
+
   const agentList = parseAgentList(response);
 
   const tabs = [
@@ -159,6 +175,15 @@ const AgentList: React.FC<AgentListProps> = props => {
     });
   };
 
+  const handleUpdateAgent = async (formData: any) => {
+    const result = await updateAgent({
+      data: { ...formData, id: params.id },
+      url: UPDATE_AGENT
+    });
+
+    return result;
+  };
+
   return (
     <>
       <ListPage
@@ -185,6 +210,7 @@ const AgentList: React.FC<AgentListProps> = props => {
           })
         }
         onChangeUpperAgent={() => openAction("dialog", "onChangeUpperAgent")}
+        onChangeGameId={() => openAction("dialog", "onEditAgent")}
         {...bulkActions}
       />
       <ActionDialog
@@ -213,6 +239,15 @@ const AgentList: React.FC<AgentListProps> = props => {
           agentList={agentList}
           loading={loadingAgent}
           onSubmit={handleChangeUpperAgent}
+        />
+      ) : null}
+      {user?.usertype === UserTypeEnum.CLUB_ADMIN ? (
+        <EditAgentDialog
+          open={params.action === "onEditAgent"}
+          closeModal={closeAction}
+          onSubmit={handleUpdateAgent}
+          agent={agent?.data}
+          loading={loadingAgent}
         />
       ) : null}
     </>

@@ -1,7 +1,5 @@
 import {
   Box,
-  Grid,
-  TextField,
   Typography,
   Skeleton,
   Button,
@@ -16,7 +14,8 @@ import * as React from "react";
 import { StatusType, UserTypeEnum } from "types";
 import MoveUpIcon from "@mui/icons-material/MoveUp";
 import { useBulkActionsTypes } from "hooks/useBulkActions";
-
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import useStyles from "./style";
 interface AgentDrawerDetailsProps extends useBulkActionsTypes {
   data?: any;
   open: boolean;
@@ -25,6 +24,7 @@ interface AgentDrawerDetailsProps extends useBulkActionsTypes {
   loading: boolean;
   onUpdateStatus: (newStatus: StatusType) => void;
   onChangeUpperAgent: () => void;
+  onChangeGameId: () => void;
 }
 
 const AgentDrawerDetails: React.FC<AgentDrawerDetailsProps> = props => {
@@ -39,11 +39,13 @@ const AgentDrawerDetails: React.FC<AgentDrawerDetailsProps> = props => {
     listElements,
     toggle,
     toggleAll,
-    reset
+    reset,
+    onChangeGameId
   } = props;
   const user = useUser();
   const loading = agentLoading || !agent;
-
+  console.log(loading);
+  const classes = useStyles(props);
   const displayActionArea = () => {
     if (
       user?.usertype === UserTypeEnum.CLUB_ADMIN &&
@@ -73,72 +75,60 @@ const AgentDrawerDetails: React.FC<AgentDrawerDetailsProps> = props => {
         {loading ? (
           <Skeleton variant="text" />
         ) : (
-          <Typography variant="h4" gutterBottom>
-            Agent # {agent.game_code}
-          </Typography>
+          <>
+            <Box display="flex" alignItems="flex-start">
+              <Typography variant="h4" gutterBottom>
+                Agent # {agent.game_code}
+              </Typography>
+              {user?.usertype === UserTypeEnum.CLUB_ADMIN ? (
+                <IconButton size="small" onClick={onChangeGameId}>
+                  <ModeEditIcon />
+                </IconButton>
+              ) : null}
+              {/* <Typography variant="caption" color="primary" gutterBottom>
+                <sub>Change Game ID</sub>
+              </Typography> */}
+            </Box>
+          </>
         )}
-        <Grid
-          container
-          rowSpacing={2}
-          sx={{
-            display: "block"
-          }}
-        >
-          <Grid item xs={12} sm={12} md={12} lg={12}>
-            {loading ? (
-              <Skeleton variant="text" height={30} />
+        <table className={classes.table}>
+          <tbody>
+            {!loading ? (
+              <>
+                <tr>
+                  <th align="left">Username</th>
+                  <td align="left">{agent?.username}</td>
+                </tr>
+                <tr>
+                  <th align="left">First name</th>
+                  <td align="left">{agent?.first_name}</td>
+                </tr>
+                <tr>
+                  <th align="left">Last name</th>
+                  <td align="left">{agent?.last_name}</td>
+                </tr>
+                <tr>
+                  <th align="left">Added By</th>
+                  <td align="left">{agent?.added_by?.name}</td>
+                </tr>
+                {user?.usertype === UserTypeEnum.AGENT ? null : (
+                  <tr>
+                    <th align="left">Commission Rate</th>
+                    <td align="left">{agent?.comms_rate}%</td>
+                  </tr>
+                )}
+              </>
             ) : (
-              <TextField
-                fullWidth
-                value={agent?.username}
-                size="small"
-                label="Username"
-                disabled
-              />
+              <>
+                <Skeleton variant="text" />
+                <Skeleton variant="text" />
+                <Skeleton variant="text" />
+                <Skeleton variant="text" />
+              </>
             )}
-          </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
-            {loading ? (
-              <Skeleton variant="text" height={30} />
-            ) : (
-              <TextField
-                fullWidth
-                value={agent?.first_name}
-                size="small"
-                label="First Name"
-                disabled
-              />
-            )}
-          </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
-            {loading ? (
-              <Skeleton />
-            ) : (
-              <TextField
-                fullWidth
-                value={agent?.last_name}
-                size="small"
-                label="Last Name"
-                disabled
-              />
-            )}
-          </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
-            <TextField
-              fullWidth
-              size="small"
-              label="Added by"
-              value={agent?.added_by?.name}
-              InputProps={{
-                readOnly: true
-              }}
-              InputLabelProps={{
-                shrink: true
-              }}
-              disabled
-            />
-          </Grid>
-        </Grid>
+          </tbody>
+        </table>
+
         <Box marginTop={5}>
           <Typography variant="h4">Sub-Agents</Typography>
           <Table
