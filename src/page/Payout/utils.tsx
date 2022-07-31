@@ -49,6 +49,9 @@ export const parseAgentPayout = (
         {currencyFormat(agent_payout?.admin_fee)}
       </Typography>
     ),
+    comms_rate: (
+      <Typography fontWeight={600}>{agent_payout?.comms_rate}%</Typography>
+    ),
     deduction: maybe(() => currencyFormat(agent_payout.deduction), "0.00"),
     game_code: agent_payout?.agent?.game_code,
     id: agent_payout.id,
@@ -64,6 +67,10 @@ export const parseAgentPayout = (
         {currencyFormat(agent_payout?.sub_agent_salary)}
       </Typography>
     ),
-    total_salary: currencyFormat(agent_payout?.total_salary)
+    total_salary: (
+      <Typography fontWeight={600}>
+        {currencyFormat(agent_payout?.total_salary)}
+      </Typography>
+    )
   }));
 };

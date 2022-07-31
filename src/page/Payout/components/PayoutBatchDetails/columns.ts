@@ -12,6 +12,11 @@ const PayoutBatchDetailsColumn: ColumnType[] = [
     path: "name"
   },
   {
+    key: 99,
+    label: "Commission Rate",
+    path: "comms_rate"
+  },
+  {
     key: 3,
     label: "Initial Salary",
     path: "initial_salary"
