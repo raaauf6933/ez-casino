@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import { AxiosResponse } from "axios";
 import StatusLabel from "components/StatusLabel";
 import moment from "moment";
@@ -43,14 +44,26 @@ export const parseAgentPayout = (
   response: AxiosResponse<any, any> | undefined
 ) => {
   return response?.data?.payout?.agent_payouts.map((agent_payout: any) => ({
-    admin_fee: currencyFormat(agent_payout?.admin_fee),
+    admin_fee: (
+      <Typography color="red">
+        {currencyFormat(agent_payout?.admin_fee)}
+      </Typography>
+    ),
     deduction: maybe(() => currencyFormat(agent_payout.deduction), "0.00"),
     game_code: agent_payout?.agent?.game_code,
     id: agent_payout.id,
-    initial_salary: currencyFormat(agent_payout?.initial_salary),
+    initial_salary: (
+      <Typography color="green">
+        {currencyFormat(agent_payout?.initial_salary)}
+      </Typography>
+    ),
     name: `${agent_payout?.agent?.first_name} ${agent_payout?.agent?.last_name}`,
     status: <StatusLabel status={agent_payout?.status} />,
-    sub_agent_salary: currencyFormat(agent_payout?.sub_agent_salary),
+    sub_agent_salary: (
+      <Typography color="green">
+        {currencyFormat(agent_payout?.sub_agent_salary)}
+      </Typography>
+    ),
     total_salary: currencyFormat(agent_payout?.total_salary)
   }));
 };
