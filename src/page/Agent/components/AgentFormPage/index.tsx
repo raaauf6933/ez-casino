@@ -13,6 +13,7 @@ import SaveButtonBar from "components/SaveButtonBar";
 import { useUser } from "context/auth/context";
 import * as React from "react";
 import { StatusType, UserTypeEnum } from "types";
+import { restrictNoSpace, restrictToNumber } from "utils/misc";
 // import { restrictToNumber } from "utils/misc";
 
 interface AgentFormPageProps {
@@ -62,7 +63,15 @@ const AgentFormPage: React.FC<AgentFormPageProps> = props => {
                         //     ? validationError.club_name
                         //     : null
                         // }
-                        onChange={change}
+                        onKeyPress={restrictToNumber}
+                        onChange={event => {
+                          change({
+                            target: {
+                              name: event.target.name,
+                              value: restrictNoSpace(event.target.value)
+                            }
+                          });
+                        }}
                         fullWidth
                         label="Game Code"
                       />
@@ -107,6 +116,7 @@ const AgentFormPage: React.FC<AgentFormPageProps> = props => {
                         //     ? validationError.club_name
                         //     : null
                         // }
+                        onKeyPress={restrictToNumber}
                         onChange={change}
                         fullWidth
                         label="Contact Number"
@@ -143,7 +153,14 @@ const AgentFormPage: React.FC<AgentFormPageProps> = props => {
                         //     ? validationError.club_name
                         //     : null
                         // }
-                        onChange={change}
+                        onChange={event => {
+                          change({
+                            target: {
+                              name: event.target.name,
+                              value: restrictNoSpace(event.target.value)
+                            }
+                          });
+                        }}
                         fullWidth
                         label="Username"
                       />

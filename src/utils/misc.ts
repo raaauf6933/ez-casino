@@ -35,6 +35,10 @@ export const restrictToNumber = (event: any) => {
   }
 };
 
+export const restrictNoSpace = (string: string) => {
+  return string.replace(/\s+/g, "");
+};
+
 export function findValueInEnum<TEnum extends object>(
   needle: string,
   haystack: TEnum
