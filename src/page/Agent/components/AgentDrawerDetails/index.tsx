@@ -15,6 +15,7 @@ import { StatusType, UserTypeEnum } from "types";
 import MoveUpIcon from "@mui/icons-material/MoveUp";
 import { useBulkActionsTypes } from "hooks/useBulkActions";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import useStyles from "./style";
 interface AgentDrawerDetailsProps extends useBulkActionsTypes {
   data?: any;
@@ -25,6 +26,7 @@ interface AgentDrawerDetailsProps extends useBulkActionsTypes {
   onUpdateStatus: (newStatus: StatusType) => void;
   onChangeUpperAgent: () => void;
   onChangeGameId: () => void;
+  onDeleteAgent: (newStatus: StatusType) => void;
 }
 
 const AgentDrawerDetails: React.FC<AgentDrawerDetailsProps> = props => {
@@ -40,7 +42,8 @@ const AgentDrawerDetails: React.FC<AgentDrawerDetailsProps> = props => {
     toggle,
     toggleAll,
     reset,
-    onChangeGameId
+    onChangeGameId,
+    onDeleteAgent
   } = props;
   const user = useUser();
   const loading = agentLoading || !agent;
@@ -56,6 +59,7 @@ const AgentDrawerDetails: React.FC<AgentDrawerDetailsProps> = props => {
       return false;
     }
   };
+  console.log(agent);
 
   return (
     <Drawer
@@ -81,9 +85,19 @@ const AgentDrawerDetails: React.FC<AgentDrawerDetailsProps> = props => {
                 Agent # {agent.game_code}
               </Typography>
               {user?.usertype === UserTypeEnum.CLUB_ADMIN ? (
-                <IconButton size="small" onClick={onChangeGameId}>
-                  <ModeEditIcon />
-                </IconButton>
+                <>
+                  <IconButton size="small" onClick={onChangeGameId}>
+                    <ModeEditIcon />
+                  </IconButton>
+                  <IconButton
+                    color="error"
+                    size="small"
+                    onClick={() => onDeleteAgent(StatusType.DELETED)}
+                    disabled={!agent || agent?.sub_agents?.length > 0}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </>
               ) : null}
               {/* <Typography variant="caption" color="primary" gutterBottom>
                 <sub>Change Game ID</sub>

@@ -8,7 +8,7 @@ import {
 } from "page/Agent/api";
 import ListPage from "page/Agent/components/ListPage";
 import * as React from "react";
-import { columns, parseAgentList } from "./../../utils";
+import { columns, parseAgentList, tabs } from "./../../utils";
 import { useUser } from "context/auth/context";
 import { StatusType, UserTypeEnum } from "types";
 import AgentDrawerDetails from "page/Agent/components/AgentDrawerDetails";
@@ -26,6 +26,7 @@ import ChangeAgentDialog from "page/Agent/components/ChangeAgentDialog";
 import useBulkActions from "hooks/useBulkActions";
 import { ErrorChangeUpperAgentHandler } from "page/Agent/handlers";
 import EditAgentDialog from "page/Agent/components/EditAgentDialog";
+import { Typography } from "@mui/material";
 
 interface AgentListProps {
   params: AgentListUrlQueryParams;
@@ -77,10 +78,15 @@ const AgentList: React.FC<AgentListProps> = props => {
   >(navigate, AgentListUrl, params);
 
   const [updateAgentStatus] = makeHttpPost({
-    onComplete: () => {
+    onComplete: e => {
       toast("Changes Saved!");
       refetchList();
-      closeAction("dialog");
+
+      if (e.data?.status === "DELETED") {
+        closeAction();
+      } else {
+        closeAction("dialog");
+      }
     },
     onError: err => {
       toast.error(err.response?.data?.message);
@@ -116,29 +122,6 @@ const AgentList: React.FC<AgentListProps> = props => {
   });
 
   const agentList = parseAgentList(response);
-
-  const tabs = [
-    {
-      label: "ALL",
-      name: "ALL"
-    },
-    {
-      label: "For Approval",
-      name: "FOR_APPROVAL"
-    },
-    {
-      label: "Active",
-      name: "ACTIVE"
-    },
-    {
-      label: "In-Active",
-      name: "INACTIVE"
-    },
-    {
-      label: "Rejected",
-      name: "REJECT"
-    }
-  ];
 
   const onTabChange = (tab: number) => {
     navigate(
@@ -215,6 +198,9 @@ const AgentList: React.FC<AgentListProps> = props => {
         }
         onChangeUpperAgent={() => openAction("dialog", "onChangeUpperAgent")}
         onChangeGameId={() => openAction("dialog", "onEditAgent")}
+        onDeleteAgent={(newStatus: StatusType) =>
+          openAction("dialog", "onDeleteAgent", { newStatus })
+        }
         {...bulkActions}
       />
       <ActionDialog
@@ -253,6 +239,18 @@ const AgentList: React.FC<AgentListProps> = props => {
           agent={agent?.data}
           loading={loadingAgent}
         />
+      ) : null}
+      {user?.usertype === UserTypeEnum.CLUB_ADMIN ? (
+        <ActionDialog
+          title="Delete Agent"
+          open={params.action === "onDeleteAgent"}
+          onClose={() => closeAction("dialog")}
+          onSubmit={onUpdateAgentStatus}
+        >
+          <p>
+            <Typography>Are you sure you want to Delete this Agent?</Typography>
+          </p>
+        </ActionDialog>
       ) : null}
     </>
   );

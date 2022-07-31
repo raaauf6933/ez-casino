@@ -28,7 +28,8 @@ export enum StatusType {
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
   FOR_APPROVAL = "FOR_APPROVAL",
-  REJECT = "REJECT"
+  REJECT = "REJECT",
+  DELETED = "DELETED"
 }
 
 export enum BatchPayoutStatusType {

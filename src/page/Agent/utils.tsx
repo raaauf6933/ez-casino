@@ -39,6 +39,29 @@ export const columns: ColumnType[] = [
   }
 ];
 
+export const tabs = [
+  {
+    label: "ALL",
+    name: "ALL"
+  },
+  {
+    label: "For Approval",
+    name: "FOR_APPROVAL"
+  },
+  {
+    label: "Active",
+    name: "ACTIVE"
+  },
+  {
+    label: "In-Active",
+    name: "INACTIVE"
+  },
+  {
+    label: "Rejected",
+    name: "REJECT"
+  }
+];
+
 export const subAgentTableColumns = (
   usertype: UserTypeEnum | null | undefined
 ): ColumnType[] => {
