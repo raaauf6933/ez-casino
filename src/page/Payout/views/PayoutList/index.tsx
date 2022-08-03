@@ -14,7 +14,7 @@ import makeHttpPost from "hooks/makeHttpPost";
 import { GET_BATCHES, UPLOAD_PAYOUT } from "page/Payout/api";
 import { ErrorPayoutHandlers } from "page/Payout/handlers";
 import { parseBatchPayoutList } from "./../../utils";
-import { Typography } from "@mui/material";
+// import { Typography } from "@mui/material";
 import { toast } from "react-toastify";
 import useFetch from "hooks/useFetch";
 
