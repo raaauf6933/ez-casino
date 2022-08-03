@@ -41,23 +41,22 @@ const PayoutList: React.FC<PayoutListProps> = props => {
 
   const [uploadPayout, uploadPayoutOpts] = makeHttpPost({
     onComplete: () => {
-      closeModal("dialog");
       setFiles([]);
-      toast("Batch has been processed");
       refetch();
     },
     onError: err => {
       setFiles([]);
       if (err.message === "Network Error") {
-        toast.error(
-          <>
-            <Typography variant="body1" fontWeight={600}>
-              Please Upload Batch
-            </Typography>
-          </>
-        );
+        // toast.error(
+        //   <>
+        //     <Typography variant="body1" fontWeight={600}>
+        //       Please Upload Batch
+        //     </Typography>
+        //   </>
+        // );
         setFiles([]);
       } else {
+        setFiles([]);
         ErrorPayoutHandlers(err.response);
       }
     }
@@ -76,9 +75,9 @@ const PayoutList: React.FC<PayoutListProps> = props => {
       url: UPLOAD_PAYOUT
     });
 
-    // closeModal("dialog");
-    // setFiles([]);
-    // toast("Batch has been processed. It will take 3-5 minutes to save");
+    closeModal("dialog");
+    setFiles([]);
+    toast("Batch has been processed. It will take 3-5 minutes to save");
   };
 
   return (
