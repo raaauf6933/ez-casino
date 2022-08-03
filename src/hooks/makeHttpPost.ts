@@ -45,7 +45,7 @@ const makeHttpPost = (props: MakeHttpPostInterface): MakeHttpPostReturnType => {
     };
 
     try {
-      const result = await axios.request({ ...axiosParams, timeout: 30000 });
+      const result = await axios.request({ ...axiosParams, timeout: 120000 });
       setResponse(result);
       if (onComplete && result) {
         onComplete(result);

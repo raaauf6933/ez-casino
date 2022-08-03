@@ -12,9 +12,9 @@ import {
 import FileUpload from "react-material-file-upload";
 import makeHttpPost from "hooks/makeHttpPost";
 import { GET_BATCHES, UPLOAD_PAYOUT } from "page/Payout/api";
-// import { ErrorPayoutHandlers } from "page/Payout/handlers";
+import { ErrorPayoutHandlers } from "page/Payout/handlers";
 import { parseBatchPayoutList } from "./../../utils";
-// import { Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { toast } from "react-toastify";
 import useFetch from "hooks/useFetch";
 
@@ -27,7 +27,7 @@ const PayoutList: React.FC<PayoutListProps> = props => {
   const navigate = useNavigate();
   const [files, setFiles] = useState<File[]>([]);
 
-  const { response } = useFetch({
+  const { response, refetch } = useFetch({
     url: GET_BATCHES
   });
 
@@ -39,7 +39,29 @@ const PayoutList: React.FC<PayoutListProps> = props => {
     params
   );
 
-  const [uploadPayout, uploadPayoutOpts] = makeHttpPost({});
+  const [uploadPayout, uploadPayoutOpts] = makeHttpPost({
+    onComplete: () => {
+      closeModal("dialog");
+      setFiles([]);
+      toast("Batch has been processed");
+      refetch();
+    },
+    onError: err => {
+      setFiles([]);
+      if (err.message === "Network Error") {
+        toast.error(
+          <>
+            <Typography variant="body1" fontWeight={600}>
+              Please Upload Batch
+            </Typography>
+          </>
+        );
+        setFiles([]);
+      } else {
+        ErrorPayoutHandlers(err.response);
+      }
+    }
+  });
 
   const onUploadPayout = () => {
     const formData = new FormData();
@@ -54,9 +76,9 @@ const PayoutList: React.FC<PayoutListProps> = props => {
       url: UPLOAD_PAYOUT
     });
 
-    closeModal("dialog");
-    setFiles([]);
-    toast("Batch has been processed. It will take 3-5 minutes to save");
+    // closeModal("dialog");
+    // setFiles([]);
+    // toast("Batch has been processed. It will take 3-5 minutes to save");
   };
 
   return (
