@@ -1,6 +1,7 @@
 import { Grid, Box, Typography, Skeleton } from "@mui/material";
 import Card from "components/Card";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
 import GroupsIcon from "@mui/icons-material/Groups";
 import useFetch from "hooks/useFetch";
 import {
@@ -40,7 +41,7 @@ const ClubAdminDashboard: React.FC = () => {
                 />
               </div>
               <Box display="flex" flexDirection="column">
-                <Typography variant="h6">Total Admin Fee</Typography>
+                <Typography variant="h6">Recent Total Admin Fee</Typography>
                 <Typography variant="h4">
                   {/* {reports?.sales_today !== undefined ? (
                   currencyFormat(reports.sales_today)
@@ -98,7 +99,7 @@ const ClubAdminDashboard: React.FC = () => {
                 />
               </div>
               <Box display="flex" flexDirection="column">
-                <Typography variant="h6">Total Agents Salary</Typography>
+                <Typography variant="h6">Recent Total Agents Salary</Typography>
                 <Typography variant="h4">
                   {/* {reports?.sales_today !== undefined ? (
                   currencyFormat(reports.sales_today)
@@ -108,7 +109,65 @@ const ClubAdminDashboard: React.FC = () => {
                   {loading ? (
                     <Skeleton variant="text" />
                   ) : (
-                    currencyFormat(response?.data?.total_initial_salary)
+                    currencyFormat(response?.data?.total_agent_salary)
+                  )}
+                </Typography>
+              </Box>
+            </Box>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <Card>
+            <Box display="flex">
+              <div className={classes.icons}>
+                <CreditCardIcon
+                  sx={{
+                    fontSize: "4em"
+                  }}
+                  color="primary"
+                />
+              </div>
+              <Box display="flex" flexDirection="column">
+                <Typography variant="h6">Recent Total Credit/Adv</Typography>
+                <Typography variant="h4">
+                  {/* {reports?.sales_today !== undefined ? (
+                  currencyFormat(reports.sales_today)
+                ) : (
+                  <Skeleton />
+                )} */}
+                  {loading ? (
+                    <Skeleton variant="text" />
+                  ) : (
+                    currencyFormat(response?.data?.total_credit)
+                  )}
+                </Typography>
+              </Box>
+            </Box>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <Card>
+            <Box display="flex">
+              <div className={classes.icons}>
+                <AccountBalanceWalletIcon
+                  sx={{
+                    fontSize: "4em"
+                  }}
+                  color="primary"
+                />
+              </div>
+              <Box display="flex" flexDirection="column">
+                <Typography variant="h6">Recent Total Salary</Typography>
+                <Typography variant="h4">
+                  {/* {reports?.sales_today !== undefined ? (
+                  currencyFormat(reports.sales_today)
+                ) : (
+                  <Skeleton />
+                )} */}
+                  {loading ? (
+                    <Skeleton variant="text" />
+                  ) : (
+                    currencyFormat(response?.data?.total_salary)
                   )}
                 </Typography>
               </Box>

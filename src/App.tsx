@@ -1,5 +1,11 @@
 import AppLayout from "./components/AppLayout";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+  Navigate
+} from "react-router-dom";
 import { parse as parseQs } from "qs";
 import "react-toastify/dist/ReactToastify.css";
 import AuthRouter from "auth";
@@ -22,6 +28,7 @@ import { UserTypeEnum } from "types";
 import AgentCreate from "page/Agent/views/AgentCreate";
 import AccountDetails from "page/AccountDetails/views/AccountDetails";
 import PayoutDetails from "page/Payout/views/PayoutDetails";
+import ClubPayoutList from "page/ClubPayout/views/ClubPayoutList";
 
 const App = (): JSX.Element => {
   return (
@@ -67,7 +74,7 @@ const AppRoutes = (): JSX.Element => {
               <Route path="create" element={<AgentCreate />} />
             </Route>
             <Route
-              path="payout"
+              path="agent-payout"
               element={
                 <SectionRoute
                   permissionUserType={[
@@ -78,6 +85,18 @@ const AppRoutes = (): JSX.Element => {
               }
             >
               <Route index element={<PayoutList params={queryParams} />} />
+              <Route
+                path=":id"
+                element={<PayoutDetails params={queryParams} />}
+              />
+            </Route>
+            <Route
+              path="club-payout"
+              element={
+                <SectionRoute permissionUserType={[UserTypeEnum.SUPER_USER]} />
+              }
+            >
+              <Route index element={<ClubPayoutList params={queryParams} />} />
               <Route
                 path=":id"
                 element={<PayoutDetails params={queryParams} />}
@@ -102,7 +121,7 @@ const AppRoutes = (): JSX.Element => {
             {/* 
           <Route path="/payout" element={<Payout />} />
           <Route path="/users" element={<Users />} /> */}
-            {/* <Route path="*" element={<Navigate to="/" />} /> */}
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </AppLayout>
       ) : (

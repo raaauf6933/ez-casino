@@ -24,6 +24,7 @@ interface TableProps {
   selected?: string[];
   toggleAll?: () => void;
   toolbar?: React.ReactNode;
+  defaultPageSize?: number;
 }
 
 const Table: React.FC<TableProps> = props => {
@@ -35,12 +36,13 @@ const Table: React.FC<TableProps> = props => {
     minWidth,
     toggleAll,
     selected,
-    toolbar
+    toolbar,
+    defaultPageSize
   } = props;
   const classes = useStyles();
   const [state, setState] = React.useState({
     currentPage: 0,
-    pageSize: 10
+    pageSize: defaultPageSize || 10
   });
 
   const getPageData = () => {
@@ -150,7 +152,7 @@ const Table: React.FC<TableProps> = props => {
 
       {/* </TableContainer> */}
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[5, 10, 25, 50, 100]}
         component="div"
         // nextIconButtonProps={{
         //   disabled: loading

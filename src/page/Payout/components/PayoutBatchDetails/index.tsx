@@ -11,7 +11,12 @@ const PayoutBatchDetails: React.FC<PayoutBatchDetailsProps> = props => {
   const { data } = props;
   return (
     <Card title="Batch  Details">
-      <Table columns={PayoutBatchDetailsColumn} data={data} loading={false} />
+      <Table
+        columns={PayoutBatchDetailsColumn}
+        data={data}
+        loading={false}
+        defaultPageSize={100}
+      />
     </Card>
   );
 };

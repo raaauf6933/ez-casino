@@ -38,9 +38,16 @@ export const createMenuStructure = (): MenuStructure[] => [
   {
     icon: <AssignmentIcon />,
     key: 4,
-    label: "Payout",
+    label: "Agent Payout",
     permissionUserType: [UserTypeEnum.CLUB_ADMIN, UserTypeEnum.SUPER_USER],
-    url: "/payout"
+    url: "/agent-payout"
+  },
+  {
+    icon: <AssignmentIcon />,
+    key: 4,
+    label: "Club Payout",
+    permissionUserType: [UserTypeEnum.SUPER_USER],
+    url: "/club-payout"
   },
   {
     icon: <PersonIcon />,
