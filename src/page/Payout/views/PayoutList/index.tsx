@@ -17,6 +17,7 @@ import { parseBatchPayoutList } from "./../../utils";
 // import { Typography } from "@mui/material";
 import { toast } from "react-toastify";
 import useFetch from "hooks/useFetch";
+import { useUser } from "context/auth/context";
 
 interface PayoutListProps {
   params: PayoutListUrlQueryParams;
@@ -26,6 +27,7 @@ const PayoutList: React.FC<PayoutListProps> = props => {
   const { params } = props;
   const navigate = useNavigate();
   const [files, setFiles] = useState<File[]>([]);
+  const user = useUser();
 
   const { response, refetch } = useFetch({
     url: GET_BATCHES
@@ -83,7 +85,7 @@ const PayoutList: React.FC<PayoutListProps> = props => {
   return (
     <>
       <ListPage
-        columns={columns}
+        columns={columns(user?.usertype)}
         data={batch_list}
         onUploadPayout={() => openModal("dialog", "uploadPayoutBatch")}
         onRowClick={id => navigate(payoutPath(id))}
