@@ -1,5 +1,6 @@
 import Card from "components/Card";
-import Table from "components/Table";
+// import Table from "components/Table";
+import TableAccordion from "components/TableAccordion";
 import * as React from "react";
 import PayoutBatchDetailsColumn from "./columns";
 
@@ -11,12 +12,18 @@ const PayoutBatchDetails: React.FC<PayoutBatchDetailsProps> = props => {
   const { data } = props;
   return (
     <Card title="Batch  Details">
-      <Table
+      <TableAccordion
+        columns={PayoutBatchDetailsColumn}
+        data={data}
+        loading={false}
+        subTableColumns={PayoutBatchDetailsColumn}
+      />
+      {/* <Table
         columns={PayoutBatchDetailsColumn}
         data={data}
         loading={false}
         defaultPageSize={100}
-      />
+      /> */}
     </Card>
   );
 };

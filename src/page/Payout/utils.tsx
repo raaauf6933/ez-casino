@@ -71,6 +71,40 @@ export const parseAgentPayout = (
     ),
     name: `${agent_payout?.agent?.first_name} ${agent_payout?.agent?.last_name}`,
     status: <StatusLabel status={agent_payout?.status} />,
+    subData: parseSubAgent(agent_payout.agent_subAgent_payouts),
+    sub_agent_salary: (
+      <Typography color="green">
+        {currencyFormat(agent_payout?.sub_agent_salary)}
+      </Typography>
+    ),
+    total_salary: (
+      <Typography fontWeight={600}>
+        {currencyFormat(agent_payout?.total_salary)}
+      </Typography>
+    )
+  }));
+};
+
+export const parseSubAgent = (data: any) => {
+  return data.map((agent_payout: any) => ({
+    admin_fee: (
+      <Typography color="red">
+        {currencyFormat(agent_payout?.admin_fee)}
+      </Typography>
+    ),
+    comms_rate: (
+      <Typography fontWeight={600}>{agent_payout?.comms_rate}%</Typography>
+    ),
+    deduction: maybe(() => currencyFormat(agent_payout.deduction), "0.00"),
+    game_code: agent_payout?.agent?.game_code,
+    id: agent_payout.id,
+    initial_salary: (
+      <Typography color="green">
+        {currencyFormat(agent_payout?.initial_salary)}
+      </Typography>
+    ),
+    name: `${agent_payout?.agent?.first_name} ${agent_payout?.agent?.last_name}`,
+    status: <StatusLabel status={agent_payout?.status} />,
     sub_agent_salary: (
       <Typography color="green">
         {currencyFormat(agent_payout?.sub_agent_salary)}
