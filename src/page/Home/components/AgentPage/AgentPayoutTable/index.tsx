@@ -1,9 +1,8 @@
 import { AxiosResponse } from "axios";
 import TableAccordion from "components/TableAccordion";
 import { parseAgentPayout } from "page/Home/utils/agent";
-import PayoutBatchDetailsColumn from "page/Payout/components/PayoutBatchDetails/columns";
 import React from "react";
-import PayoutAgentDetailsColumn from "./columns";
+import PayoutAgentDetailsColumn, { PayoutSubAgentColumn } from "./columns";
 
 interface AgentPayoutTableProps {
   data: AxiosResponse<any, any> | undefined;
@@ -21,7 +20,7 @@ const AgentPayoutTable: React.FC<AgentPayoutTableProps> = props => {
         columns={PayoutAgentDetailsColumn}
         data={agentPayouts}
         loading={false}
-        subTableColumns={PayoutBatchDetailsColumn}
+        subTableColumns={PayoutSubAgentColumn}
       />
     </>
   );

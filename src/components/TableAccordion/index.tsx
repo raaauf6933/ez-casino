@@ -33,6 +33,8 @@ function Row(props: any) {
     return _.get(item, column.path);
   };
 
+  const filterSubAgentColumns = subTableColumns.filter((e: any) => !e.hide);
+
   return (
     <React.Fragment>
       <TableRow onClick={() => (onRowClick ? onRowClick(item.id) : null)} hover>
@@ -76,7 +78,7 @@ function Row(props: any) {
                 <Table size="small" aria-label="purchases">
                   <TableHead>
                     <TableRow>
-                      {subTableColumns.map((thead: any) => (
+                      {filterSubAgentColumns.map((thead: any) => (
                         <TableCell key={thead.key}>
                           <b>{thead.label}</b>
                         </TableCell>
@@ -100,15 +102,16 @@ function Row(props: any) {
                             }
                             hover
                           >
-                            {subTableColumns.map((column: any, index: number) =>
-                              column.hide ? null : (
-                                <TableCell
-                                  key={column.key + index.toString()}
-                                  className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                                >
-                                  {renderCell(subData, column)}
-                                </TableCell>
-                              )
+                            {filterSubAgentColumns.map(
+                              (column: any, index: number) =>
+                                column.hide ? null : (
+                                  <TableCell
+                                    key={column.key + index.toString()}
+                                    className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                                  >
+                                    {renderCell(subData, column)}
+                                  </TableCell>
+                                )
                             )}
                           </TableRow>
                         </>
@@ -116,7 +119,7 @@ function Row(props: any) {
                       () => (
                         <TableRow>
                           <TableCell
-                            colSpan={subTableColumns.length}
+                            colSpan={filterSubAgentColumns.length}
                             align="center"
                           >
                             <h1>No Data</h1>
@@ -125,7 +128,7 @@ function Row(props: any) {
                       ),
                       () => (
                         <TableRow>
-                          {subTableColumns.map((column: any) => (
+                          {filterSubAgentColumns.map((column: any) => (
                             <>
                               <TableCell key={column.key} align="center">
                                 <Skeleton key={column.key} />
