@@ -11,13 +11,18 @@ interface PayoutDetaillsProps {
 
 const PayoutDetails: React.FC<PayoutDetaillsProps> = () => {
   const { id } = useParams();
+  const [search, setSearch] = React.useState<string>("");
 
-  const { response } = useFetch({
+  const { response, refetch } = useFetch({
     params: {
-      id
+      id,
+      search: search
     },
     url: GET_BATCH
   });
+  React.useEffect(() => {
+    refetch();
+  }, [search]);
 
   const agentPayouts = parseAgentPayout(response);
 
@@ -25,6 +30,8 @@ const PayoutDetails: React.FC<PayoutDetaillsProps> = () => {
     <PayoutDetailsPage
       agentPayouts={agentPayouts}
       batchInfo={response?.data?.payout}
+      searchValue={search}
+      setSearchValue={setSearch}
     />
   );
 };

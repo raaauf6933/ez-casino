@@ -8,10 +8,12 @@ import PayoutBatchInfo from "../PayoutBatchInfo";
 interface DetailsPageProps {
   batchInfo?: any;
   agentPayouts: any[];
+  setSearchValue: (data: string) => void;
+  searchValue: string;
 }
 
 const DetailsPage: React.FC<DetailsPageProps> = props => {
-  const { agentPayouts, batchInfo } = props;
+  const { agentPayouts, batchInfo, searchValue, setSearchValue } = props;
 
   return (
     <>
@@ -20,7 +22,11 @@ const DetailsPage: React.FC<DetailsPageProps> = props => {
       />
       <Grid container spacing={2}>
         <Grid item xs={12} sm={12} md={8} lg={8}>
-          <PayoutBatchDetails data={agentPayouts} />
+          <PayoutBatchDetails
+            data={agentPayouts}
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+          />
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4}>
           <PayoutBatchInfo data={batchInfo} />

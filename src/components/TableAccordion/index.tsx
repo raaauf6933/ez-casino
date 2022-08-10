@@ -167,6 +167,7 @@ interface TableAccordionProps {
   toggleAll?: () => void;
   toolbar?: React.ReactNode;
   defaultPageSize?: number;
+  resetCurrentPage?: string;
 }
 
 const TableAccordion: React.FC<TableAccordionProps> = props => {
@@ -177,7 +178,8 @@ const TableAccordion: React.FC<TableAccordionProps> = props => {
     data,
     loading,
     onRowClick,
-    subTableColumns
+    subTableColumns,
+    resetCurrentPage
   } = props;
 
   const classes = useStyles();
@@ -185,6 +187,11 @@ const TableAccordion: React.FC<TableAccordionProps> = props => {
     currentPage: 0,
     pageSize: defaultPageSize || 10
   });
+
+  React.useEffect(
+    () => setState({ ...state, currentPage: 0 }),
+    [resetCurrentPage]
+  );
 
   const getPageData = () => {
     const { currentPage, pageSize } = state;
