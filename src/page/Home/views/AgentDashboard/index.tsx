@@ -7,7 +7,9 @@ import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import UseStyle from "./../../style";
 import { currencyFormat } from "utils/currencyFormat";
 import useFetch from "hooks/useFetch";
-import { GET_AGENT_DASHBOARD } from "page/Home/api";
+import { GET_AGENT_DASHBOARD, GET_AGENT_PAYOUT } from "page/Home/api";
+import { useUser } from "context/auth/context";
+import AgentPayoutTable from "page/Home/components/AgentPage/AgentPayoutTable";
 
 interface AgentDashboardProps {
   test?: any;
@@ -16,7 +18,16 @@ interface AgentDashboardProps {
 const AgentDashboard: React.FC<AgentDashboardProps> = () => {
   const classes = UseStyle({});
 
+  const user = useUser();
+
   const { response } = useFetch({ url: GET_AGENT_DASHBOARD });
+
+  const { response: agentPayoutResponse } = useFetch({
+    params: {
+      id: user?._id
+    },
+    url: GET_AGENT_PAYOUT
+  });
 
   return (
     <>
@@ -94,6 +105,11 @@ const AgentDashboard: React.FC<AgentDashboardProps> = () => {
                 </Typography>
               </Box>
             </Box>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <Card title="My Payouts">
+            <AgentPayoutTable data={agentPayoutResponse} />
           </Card>
         </Grid>
       </Grid>{" "}
