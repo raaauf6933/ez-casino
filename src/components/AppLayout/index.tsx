@@ -42,7 +42,7 @@ const AppLayout = (props: { children: React.ReactNode }): JSX.Element => {
           <Box
             component="main"
             sx={{
-              maxWidth: "1024px",
+              // maxWidth: "1024px",
               overflow: "auto",
               // width: "",
               padding: "1em 1em 1em 1em"
