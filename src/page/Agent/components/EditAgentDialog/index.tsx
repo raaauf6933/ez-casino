@@ -99,10 +99,10 @@ const EditAgentDialog: React.FC<EditAgentDialogProps> = props => {
                         <Slider
                           defaultValue={55}
                           valueLabelDisplay="auto"
-                          step={5}
+                          step={1}
                           marks
                           min={55}
-                          max={100}
+                          max={70}
                           name="comms_rate"
                           value={data.comms_rate}
                           onChange={(_, newValue) =>
