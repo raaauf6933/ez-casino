@@ -33,6 +33,7 @@ export enum StatusType {
 }
 
 export enum BatchPayoutStatusType {
+  CANCELLED = "CANCELLED",
   COMPLETED = "COMPLETED",
   ONGOING = "ONGOING"
 }

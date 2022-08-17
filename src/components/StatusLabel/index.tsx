@@ -34,6 +34,28 @@ const StatusLabel: React.FC<StatusLabelProps> = props => {
           label={status}
         />
       );
+    case BatchPayoutStatusType.COMPLETED:
+      return (
+        <Chip icon={<FiberManualRecordIcon />} color="primary" label={status} />
+      );
+    case BatchPayoutStatusType.ONGOING:
+      return (
+        <Chip
+          icon={
+            <FiberManualRecordIcon
+              style={{
+                color: "rgb(228 206 111)"
+              }}
+            />
+          }
+          color="warning"
+          style={{
+            color: "#0000007d",
+            fontWeight: 600
+          }}
+          label={status}
+        />
+      );
     default:
       return <Chip icon={<FiberManualRecordIcon />} label={status} />;
   }

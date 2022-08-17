@@ -6,7 +6,12 @@ import {
   TextField,
   Button,
   Box,
-  Typography
+  Typography,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput
 } from "@mui/material";
 import useStyles from "./styles";
 import logo from "../../../assets/images/ec_logo.png";
@@ -14,6 +19,8 @@ import Form from "components/Form";
 import AuthContext from "context/auth/context";
 import { useContext } from "react";
 import AppStateContext from "context/appState/context";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 export interface LoginFormData {
   password: string;
@@ -30,6 +37,7 @@ const Login: React.FC = props => {
   const { state } = useContext(AppStateContext);
   const [error, setError] = React.useState<any>();
   const classes = useStyles(props);
+  const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
   const onSubmit = async (formData: LoginFormData) => {
     const error = await userLogin(formData);
@@ -72,18 +80,43 @@ const Login: React.FC = props => {
                       error={error ? true : false}
                       size="small"
                     />
-                    <TextField
-                      className={classes.textField}
-                      value={data?.password}
-                      error={error ? true : false}
-                      onChange={change}
-                      label="Password"
-                      name="password"
-                      type="password"
+                    <FormControl
+                      // sx={{ m: 1, width: "25ch" }}
+                      variant="outlined"
                       fullWidth
-                      autoComplete="off"
                       size="small"
-                    />
+                      className={classes.textField}
+                    >
+                      <InputLabel htmlFor="outlined-adornment-password">
+                        Password
+                      </InputLabel>
+                      <OutlinedInput
+                        id="outlined-adornment-password"
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        value={data?.password}
+                        onChange={change}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={() =>
+                                setShowPassword(prevState => !prevState)
+                              }
+                              onMouseDown={e => e.preventDefault()}
+                              edge="end"
+                            >
+                              {showPassword ? (
+                                <VisibilityOff />
+                              ) : (
+                                <Visibility />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        }
+                        label="Password"
+                      />
+                    </FormControl>
                     <Box marginBottom="10px">
                       <Typography
                         sx={{

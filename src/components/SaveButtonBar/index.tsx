@@ -19,6 +19,30 @@ interface SaveButtonBarProps {
 const SaveButtonBar: React.FC<SaveButtonBarProps> = props => {
   const { onSave, onBack, labels, hideSaveBtn, loading, disabled } = props;
   const classes = useStyles(props);
+  // const SaveButtonBarEl = React.useRef<HTMLDivElement>(null);
+  // const [scrollY, setScrollY] = React.useState(0);
+  // const [positionUnset, setPositionUnset] = React.useState(false);
+
+  // const handleScroll = () => {
+  //   setScrollY(window.scrollY);
+  // };
+
+  // React.useEffect(() => {
+  //   if (window.innerHeight + scrollY > document.body.offsetHeight) {
+  //     setPositionUnset(true);
+  //   } else {
+  //     setPositionUnset(false);
+  //   }
+
+  //   window.addEventListener("scroll", handleScroll);
+  //   console.log(scrollY);
+  //   console.log(window.innerHeight + window.scrollY);
+  //   console.log(document.body.clientHeight);
+
+  //   // console.log(document.body.offsetHeight);
+  //   // console.log(SaveButtonBarEl?.current?.offsetHeight);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // });
 
   return (
     <>

@@ -1,17 +1,34 @@
-import { Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import Card from "components/Card";
 import * as React from "react";
+import { BatchPayoutStatusType } from "types";
 import { currencyFormat } from "utils/currencyFormat";
 
 interface PayoutBatchInfoProps {
   data?: any;
+  onUpdateStatus: (status: BatchPayoutStatusType) => void;
 }
 
 const PayoutBatchInfo: React.FC<PayoutBatchInfoProps> = props => {
-  const { data } = props;
+  const { data, onUpdateStatus } = props;
 
   return (
-    <Card title="Batch  Details">
+    <Card
+      title="Batch  Details"
+      action={
+        data?.status !== BatchPayoutStatusType.ONGOING ? null : (
+          <>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => onUpdateStatus(BatchPayoutStatusType.CANCELLED)}
+            >
+              <Typography fontWeight={600}>Cancel</Typography>
+            </Button>
+          </>
+        )
+      }
+    >
       <Grid container spacing={1}>
         <Grid item md={6} lg={6}>
           <Typography fontWeight={600}>Batch ID</Typography>
