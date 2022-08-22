@@ -8,7 +8,7 @@ interface ClubCashAdvanceListProps {
 const ClubCashAdvanceList: React.FC<ClubCashAdvanceListProps> = () => {
   return (
     <ClubCashAdvanceListPage
-      setSearchValue={function (_data: string): void {
+      setSearchValue={function (): void {
         throw new Error("Function not implemented.");
       }}
       searchValue={""}
