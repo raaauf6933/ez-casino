@@ -14,6 +14,7 @@ import { Club } from "page/Club/types";
 import React from "react";
 import { StatusType } from "types";
 import { restrictToNumber } from "utils/misc";
+import SelectComponent from "components/Select";
 
 interface ClubFormPageProps {
   createClub?: (formData: any) => Promise<any>;
@@ -29,11 +30,25 @@ const ClubFormPage: React.FC<ClubFormPageProps> = props => {
     props;
 
   const initialFormData = {
+    admin_rate: data?.admin_rate || "",
+    club_game_id: data?.club_game_id || "",
     club_name: data?.club_name || "",
     contact_person: data?.contact_person || "",
     email: data?.email || "",
     mobile_number: data?.mobile_number || "",
     status: data?.status || StatusType.ACTIVE
+  };
+
+  const adminRateChoices = () => {
+    // eslint-disable-next-line prefer-const
+    let tempArray = [];
+    for (let i = 1; i <= 10; i++) {
+      tempArray.push({
+        label: `${i}%`,
+        value: i
+      });
+    }
+    return tempArray;
   };
 
   return (
@@ -51,6 +66,22 @@ const ClubFormPage: React.FC<ClubFormPageProps> = props => {
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={12} md={12}>
                       <TextField
+                        name="club_game_id"
+                        value={data.club_game_id}
+                        error={validationError.club_game_id ? true : false}
+                        onKeyPress={restrictToNumber}
+                        helperText={
+                          validationError.club_game_id
+                            ? validationError.club_game_id
+                            : null
+                        }
+                        onChange={change}
+                        fullWidth
+                        label="Club Game ID"
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={6}>
+                      <TextField
                         name="club_name"
                         value={data.club_name}
                         error={validationError.club_name ? true : false}
@@ -63,6 +94,28 @@ const ClubFormPage: React.FC<ClubFormPageProps> = props => {
                         fullWidth
                         label="Club Name"
                       />
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={6}>
+                      <SelectComponent
+                        choices={adminRateChoices()}
+                        name="admin_rate"
+                        label="Admin Rate"
+                        onChange={change}
+                        value={data.admin_rate}
+                      />
+                      {/* <TextField
+                        name="admin_rate"
+                        value={data.admin_rate}
+                        error={validationError.admin_rate ? true : false}
+                        helperText={
+                          validationError.admin_rate
+                            ? validationError.admin_rate
+                            : null
+                        }
+                        onChange={change}
+                        fullWidth
+                        label="Admin Rate"
+                      /> */}
                     </Grid>
                     <Grid item xs={12} sm={12} md={4}>
                       <TextField

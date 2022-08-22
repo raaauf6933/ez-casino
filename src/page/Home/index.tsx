@@ -3,6 +3,7 @@ import { useUser } from "context/auth/context";
 import { UserTypeEnum } from "types";
 import AgentDashboard from "./views/AgentDashboard";
 import ClubAdminDashboard from "./views/ClubAdminDashboard";
+import SuperAdminDashboard from "./views/SuperAdminDashboard";
 
 const Home = (): JSX.Element => {
   const user = useUser();
@@ -14,7 +15,7 @@ const Home = (): JSX.Element => {
       case UserTypeEnum.CLUB_ADMIN:
         return <ClubAdminDashboard />;
       default:
-        return <ClubAdminDashboard />;
+        return <SuperAdminDashboard />;
     }
   };
 

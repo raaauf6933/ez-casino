@@ -1,5 +1,12 @@
 export const userFormValidate = (formData: any) => {
-  const { club_name, contact_person, mobile_number, email } = formData;
+  const {
+    club_name,
+    contact_person,
+    mobile_number,
+    email,
+    club_game_id,
+    admin_rate
+  } = formData;
 
   const clubNameValidate = () => {
     if (club_name === "") {
@@ -33,7 +40,25 @@ export const userFormValidate = (formData: any) => {
     }
   };
 
+  const clubGameIdValidate = () => {
+    if (club_game_id === "") {
+      return "This field is required";
+    } else {
+      return null;
+    }
+  };
+
+  const adminRateValidate = () => {
+    if (admin_rate === "") {
+      return "This field is required";
+    } else {
+      return null;
+    }
+  };
+
   return {
+    admin_rate: adminRateValidate(),
+    club_game_id: clubGameIdValidate(),
     club_name: clubNameValidate(),
     contact_person: contactPersonValidate(),
     email: emailValidate(),

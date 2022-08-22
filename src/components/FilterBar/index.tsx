@@ -14,18 +14,20 @@ const FilterBar: React.FC<FilterBarProps> = props => {
 
   return (
     <>
-      <FilterTabs currentTab={currentTab}>
-        {tabs.map((tab, tabIndex) => {
-          return (
-            <FilterTab
-              onClick={() => onTabChange(tabIndex)}
-              label={tab.label}
-              key={tabIndex}
-              disabled={loading}
-            />
-          );
-        })}
-      </FilterTabs>
+      <div style={{ width: "100%" }}>
+        <FilterTabs currentTab={currentTab}>
+          {tabs.map((tab, tabIndex) => {
+            return (
+              <FilterTab
+                onClick={() => onTabChange(tabIndex)}
+                label={tab.label}
+                key={tabIndex}
+                disabled={loading}
+              />
+            );
+          })}
+        </FilterTabs>
+      </div>
     </>
   );
 };

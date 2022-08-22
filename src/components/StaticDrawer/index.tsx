@@ -9,6 +9,7 @@ import {
   ListItemText
 } from "@mui/material";
 import { useUser } from "context/auth/context";
+import NestedList from "./nestedList";
 
 const drawerWidth = 240;
 
@@ -58,26 +59,38 @@ const SideMenu = (): JSX.Element => {
           }
         }}
       >
-        {menuList.map(list => (
-          <ListItem key={list.key} disablePadding>
-            <NavLink
-              to={list.url}
-              style={({ isActive }) => (isActive ? activeStyle : defaultStyle)}
-            >
-              <ListItemButton>
-                <ListItemIcon>{list.icon}</ListItemIcon>
-                <ListItemText
-                  primary={list.label}
-                  sx={{
-                    "& .MuiTypography-root": {
-                      fontSize: "1em"
-                    }
-                  }}
-                />
-              </ListItemButton>
-            </NavLink>
-          </ListItem>
-        ))}
+        {menuList.map(list => {
+          if (list.children) {
+            return (
+              <>
+                <NestedList list={list} />
+              </>
+            );
+          } else {
+            return (
+              <ListItem key={list.key} disablePadding>
+                <NavLink
+                  to={list.url}
+                  style={({ isActive }) =>
+                    isActive ? activeStyle : defaultStyle
+                  }
+                >
+                  <ListItemButton>
+                    <ListItemIcon>{list.icon}</ListItemIcon>
+                    <ListItemText
+                      primary={list.label}
+                      sx={{
+                        "& .MuiTypography-root": {
+                          fontSize: "1em"
+                        }
+                      }}
+                    />
+                  </ListItemButton>
+                </NavLink>
+              </ListItem>
+            );
+          }
+        })}
       </List>
     </Drawer>
   );

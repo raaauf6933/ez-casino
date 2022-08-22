@@ -39,6 +39,7 @@ const ClubEdit: React.FC<ClubEditProps> = () => {
   });
 
   const onUpdateClub = async (formData: any) => {
+    console.log(formData);
     const error = await updateClub({
       data: { ...formData, id },
       url: UPDATE_CLUB

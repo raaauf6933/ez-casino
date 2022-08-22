@@ -70,6 +70,14 @@ const AgentList: React.FC<AgentListProps> = props => {
     }
   );
 
+  const {
+    response: allAgents,
+    loading: allAgentsLoadingAgent,
+    refetch: refetchAllAgents
+  } = useFetch({
+    url: GET_AGENTS
+  });
+
   const bulkActions = useBulkActions([]);
 
   const [openAction, closeAction] = createDialogActionHandlers<
@@ -122,6 +130,7 @@ const AgentList: React.FC<AgentListProps> = props => {
   });
 
   const agentList = parseAgentList(response);
+  const parseAllAgents = parseAgentList(allAgents);
 
   const onTabChange = (tab: number) => {
     navigate(
@@ -226,9 +235,10 @@ const AgentList: React.FC<AgentListProps> = props => {
           }}
           selectedAgents={bulkActions.listElements}
           upperAgent={params.id}
-          agentList={agentList}
-          loading={loadingAgent}
+          agentList={parseAllAgents}
+          loading={allAgentsLoadingAgent}
           onSubmit={handleChangeUpperAgent}
+          refetchAllAgents={refetchAllAgents}
         />
       ) : null}
       {user?.usertype === UserTypeEnum.CLUB_ADMIN ? (

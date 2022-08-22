@@ -28,7 +28,9 @@ import { UserTypeEnum } from "types";
 import AgentCreate from "page/Agent/views/AgentCreate";
 import AccountDetails from "page/AccountDetails/views/AccountDetails";
 import PayoutDetails from "page/Payout/views/PayoutDetails";
-import ClubPayoutList from "page/ClubPayout/views/ClubPayoutList";
+import ClubPayoutList from "page/ClubSettlement/views/ClubPayout/ClubPayoutList";
+import ClubCashAdvanceList from "page/ClubSettlement/views/ClubCashAdvance/ClubCashAdvanceList";
+import ClubPayoutDetails from "page/ClubSettlement/views/ClubPayout/ClubPayoutDetails";
 
 const App = (): JSX.Element => {
   return (
@@ -91,15 +93,31 @@ const AppRoutes = (): JSX.Element => {
               />
             </Route>
             <Route
-              path="club-payout"
+              path="club-settlement"
               element={
                 <SectionRoute permissionUserType={[UserTypeEnum.SUPER_USER]} />
               }
             >
-              <Route index element={<ClubPayoutList params={queryParams} />} />
               <Route
-                path=":id"
-                element={<PayoutDetails params={queryParams} />}
+                path="payout"
+                element={
+                  <SectionRoute
+                    permissionUserType={[UserTypeEnum.SUPER_USER]}
+                  />
+                }
+              >
+                <Route
+                  index
+                  element={<ClubPayoutList params={queryParams} />}
+                />
+                <Route
+                  path=":id"
+                  element={<ClubPayoutDetails params={queryParams} />}
+                />
+              </Route>
+              <Route
+                path="cash-advance"
+                element={<ClubCashAdvanceList params={queryParams} />}
               />
             </Route>
             <Route

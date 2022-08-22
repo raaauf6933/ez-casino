@@ -9,7 +9,9 @@ import { hasNoError } from "utils/validators";
 import makeHttpPost from "hooks/makeHttpPost";
 
 export interface validationType {
+  admin_rate: any;
   club_name: string;
+  club_game_id: string;
   contact_person: string;
   mobile_number: string;
   email: string;

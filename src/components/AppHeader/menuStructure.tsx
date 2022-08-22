@@ -1,23 +1,31 @@
-import HomeIcon from "@mui/icons-material/Home";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import CasinoIcon from "@mui/icons-material/Casino";
 import PeopleIcon from "@mui/icons-material/People";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import PersonIcon from "@mui/icons-material/Person";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
+import PaymentsIcon from "@mui/icons-material/Payments";
 import { UserTypeEnum } from "types";
 
-interface MenuStructure {
+export interface MenuStructure {
   key: number;
   label: string;
   icon: React.ReactNode;
   url: string;
   permissionUserType: UserTypeEnum[] | any;
+  children?: {
+    key: number;
+    label: string;
+    icon: React.ReactNode;
+    url: string;
+  }[];
 }
 
 export const createMenuStructure = (): MenuStructure[] => [
   {
-    icon: <HomeIcon />,
+    icon: <DashboardIcon />,
     key: 1,
-    label: "Home",
+    label: "Dashboard",
     permissionUserType: [],
     url: "/"
   },
@@ -43,11 +51,25 @@ export const createMenuStructure = (): MenuStructure[] => [
     url: "/agent-payout"
   },
   {
+    children: [
+      {
+        icon: <PaymentsIcon />,
+        key: 4,
+        label: "Payout",
+        url: "/club-settlement/payout"
+      },
+      {
+        icon: <CreditCardIcon />,
+        key: 4,
+        label: "Cash Advance",
+        url: "/club-settlement/cash-advance"
+      }
+    ],
     icon: <AssignmentIcon />,
     key: 4,
-    label: "Club Payout",
+    label: "Club Settlement",
     permissionUserType: [UserTypeEnum.SUPER_USER],
-    url: "/club-payout"
+    url: "/club-settlement"
   },
   {
     icon: <PersonIcon />,

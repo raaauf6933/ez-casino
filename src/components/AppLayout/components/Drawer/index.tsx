@@ -10,6 +10,7 @@ import {
   ListItemText
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
+import NestedList from "components/StaticDrawer/nestedList";
 
 interface DrawerProps {
   open: boolean;
@@ -57,26 +58,38 @@ const MobileDrawer: React.FC<DrawerProps> = props => {
           }
         }}
       >
-        {menuList.map(list => (
-          <ListItem key={list.key} disablePadding>
-            <NavLink
-              to={list.url}
-              style={({ isActive }) => (isActive ? activeStyle : defaultStyle)}
-            >
-              <ListItemButton>
-                <ListItemIcon>{list.icon}</ListItemIcon>
-                <ListItemText
-                  primary={list.label}
-                  sx={{
-                    "& .MuiTypography-root": {
-                      fontSize: "1em"
-                    }
-                  }}
-                />
-              </ListItemButton>
-            </NavLink>
-          </ListItem>
-        ))}
+        {menuList.map(list => {
+          if (list.children) {
+            return (
+              <>
+                <NestedList list={list} />
+              </>
+            );
+          } else {
+            return (
+              <ListItem key={list.key} disablePadding>
+                <NavLink
+                  to={list.url}
+                  style={({ isActive }) =>
+                    isActive ? activeStyle : defaultStyle
+                  }
+                >
+                  <ListItemButton>
+                    <ListItemIcon>{list.icon}</ListItemIcon>
+                    <ListItemText
+                      primary={list.label}
+                      sx={{
+                        "& .MuiTypography-root": {
+                          fontSize: "1em"
+                        }
+                      }}
+                    />
+                  </ListItemButton>
+                </NavLink>
+              </ListItem>
+            );
+          }
+        })}
       </List>
     </Drawer>
   );

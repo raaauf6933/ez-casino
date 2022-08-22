@@ -12,6 +12,7 @@ interface ChangeAgentDialogProps {
   selectedAgents: string[];
   loading: boolean;
   onSubmit: (data: any) => void;
+  refetchAllAgents: () => Promise<void>;
 }
 
 const ChangeAgentDialog: React.FC<ChangeAgentDialogProps> = props => {
@@ -22,13 +23,18 @@ const ChangeAgentDialog: React.FC<ChangeAgentDialogProps> = props => {
     upperAgent,
     selectedAgents,
     loading,
-    onSubmit
+    onSubmit,
+    refetchAllAgents
   } = props;
+
+  React.useEffect(() => {
+    refetchAllAgents();
+  }, []);
 
   const agentChoices = agentList
     ? agentList
         ?.map(agent => ({
-          label: agent.agent_name,
+          label: `${agent?.game_code} - ${agent?.agent_name}`,
           value: agent.id
         }))
         .filter(
