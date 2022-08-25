@@ -9,8 +9,8 @@ interface SaveButtonBarProps {
   onBack: () => void;
   hideSaveBtn?: boolean;
   labels?: {
-    back: string;
-    save: string;
+    back?: string;
+    save?: string;
   };
   loading: boolean;
   disabled?: boolean;

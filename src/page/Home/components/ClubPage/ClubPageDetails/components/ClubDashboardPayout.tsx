@@ -1,30 +1,45 @@
-import { Grid, Box, Typography, Skeleton } from "@mui/material";
+import { Grid, Box, Typography, Skeleton, IconButton } from "@mui/material";
 import Card from "components/Card";
 import React from "react";
 import { currencyFormat } from "utils/currencyFormat";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
-import GroupsIcon from "@mui/icons-material/Groups";
 import UseStyle from "./../../../../style";
+import PaidIcon from "@mui/icons-material/Paid";
+import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
+import PaymentsIcon from "@mui/icons-material/Payments";
 
 interface ClubDashboardPayoutProps {
   data: any;
   loading: boolean;
+  settlement: any;
 }
 
 const ClubDashboardPayout: React.FC<ClubDashboardPayoutProps> = props => {
-  const { data, loading } = props;
+  const { loading, settlement } = props;
   const classes = UseStyle({});
 
   return (
     <>
-      <Card title="This Week">
+      <Card
+        title="This Week"
+        action={
+          <>
+            <IconButton
+              color="primary"
+              aria-label="Request Cash"
+              component="label"
+            >
+              <CreditCardIcon />
+            </IconButton>
+          </>
+        }
+      >
         <Grid container spacing={2}>
           <Grid item xs={12} sm={12} md={6}>
             <Box display="flex">
               <div className={classes.icons}>
-                <InsertChartOutlinedIcon
+                <PaymentsIcon
                   sx={{
                     fontSize: "2em"
                   }}
@@ -32,7 +47,7 @@ const ClubDashboardPayout: React.FC<ClubDashboardPayoutProps> = props => {
                 />
               </div>
               <Box display="flex" flexDirection="column">
-                <Typography variant="body2">Club Earn</Typography>
+                <Typography variant="body2">Expenses</Typography>
                 <Typography variant="h6">
                   {/* {reports?.sales_today !== undefined ? (
                   currencyFormat(reports.sales_today)
@@ -42,7 +57,7 @@ const ClubDashboardPayout: React.FC<ClubDashboardPayoutProps> = props => {
                   {loading ? (
                     <Skeleton variant="text" />
                   ) : (
-                    currencyFormat(data?.data?.total_admin_fee)
+                    currencyFormat(settlement?.club_settlement?.expenses)
                   )}
                 </Typography>
               </Box>
@@ -51,7 +66,7 @@ const ClubDashboardPayout: React.FC<ClubDashboardPayoutProps> = props => {
           <Grid item xs={12} sm={12} md={6}>
             <Box display="flex">
               <div className={classes.icons}>
-                <GroupsIcon
+                <CreditCardIcon
                   sx={{
                     fontSize: "2em"
                   }}
@@ -69,7 +84,7 @@ const ClubDashboardPayout: React.FC<ClubDashboardPayoutProps> = props => {
                   {loading ? (
                     <Skeleton variant="text" />
                   ) : (
-                    currencyFormat(data?.data?.total_admin_fee)
+                    currencyFormat(settlement?.club_settlement?.cash_advance)
                   )}
                 </Typography>
               </Box>
@@ -86,7 +101,7 @@ const ClubDashboardPayout: React.FC<ClubDashboardPayoutProps> = props => {
                 />
               </div>
               <Box display="flex" flexDirection="column">
-                <Typography variant="body2">Total Club Fee</Typography>
+                <Typography variant="body2">Club Earn</Typography>
                 <Typography variant="h6">
                   {/* {reports?.sales_today !== undefined ? (
                   currencyFormat(reports.sales_today)
@@ -96,7 +111,7 @@ const ClubDashboardPayout: React.FC<ClubDashboardPayoutProps> = props => {
                   {loading ? (
                     <Skeleton variant="text" />
                   ) : (
-                    currencyFormat(data?.data?.total_agent_salary)
+                    currencyFormat(settlement?.club_settlement?.club_earn)
                   )}
                 </Typography>
               </Box>
@@ -105,7 +120,7 @@ const ClubDashboardPayout: React.FC<ClubDashboardPayoutProps> = props => {
           <Grid item xs={12} sm={12} md={6}>
             <Box display="flex">
               <div className={classes.icons}>
-                <CreditCardIcon
+                <ConnectWithoutContactIcon
                   sx={{
                     fontSize: "2em"
                   }}
@@ -123,16 +138,16 @@ const ClubDashboardPayout: React.FC<ClubDashboardPayoutProps> = props => {
                   {loading ? (
                     <Skeleton variant="text" />
                   ) : (
-                    currencyFormat(data?.data?.total_credit)
+                    currencyFormat(settlement?.club_settlement?.union_fee)
                   )}
                 </Typography>
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={12} sm={12} md={12}>
+          <Grid item xs={12} sm={12} md={6}>
             <Box display="flex">
               <div className={classes.icons}>
-                <AccountBalanceWalletIcon
+                <PaidIcon
                   sx={{
                     fontSize: "2em"
                   }}
@@ -140,7 +155,7 @@ const ClubDashboardPayout: React.FC<ClubDashboardPayoutProps> = props => {
                 />
               </div>
               <Box display="flex" flexDirection="column">
-                <Typography variant="body2">Total Remaining</Typography>
+                <Typography variant="body2">Total Club Fee</Typography>
                 <Typography variant="h6">
                   {/* {reports?.sales_today !== undefined ? (
                   currencyFormat(reports.sales_today)
@@ -150,12 +165,12 @@ const ClubDashboardPayout: React.FC<ClubDashboardPayoutProps> = props => {
                   {loading ? (
                     <Skeleton variant="text" />
                   ) : (
-                    currencyFormat(data?.data?.total_salary)
+                    currencyFormat(settlement?.club_settlement?.total_club_earn)
                   )}
                 </Typography>
               </Box>
             </Box>
-          </Grid>
+          </Grid>{" "}
         </Grid>
       </Card>
     </>

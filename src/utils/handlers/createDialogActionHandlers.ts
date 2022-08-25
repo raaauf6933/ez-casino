@@ -30,7 +30,8 @@ function createDialogActionHandlers<
           ...params,
           action: undefined,
           ids: undefined,
-          newStatus: undefined
+          newStatus: undefined,
+          status: undefined
         }),
         {
           replace: true
@@ -43,7 +44,8 @@ function createDialogActionHandlers<
           drawerAction: undefined,
           id: undefined,
           ids: undefined,
-          newStatus: undefined
+          newStatus: undefined,
+          status: undefined
         }),
         {
           replace: true
@@ -57,7 +59,8 @@ function createDialogActionHandlers<
           drawerAction: undefined,
           id: undefined,
           ids: undefined,
-          newStatus: undefined
+          newStatus: undefined,
+          status: undefined
         }),
         {
           replace: true

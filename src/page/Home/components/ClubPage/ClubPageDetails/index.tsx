@@ -8,10 +8,13 @@ import ClubDashboardPayout from "./components/ClubDashboardPayout";
 interface ClubPageDetailsProps {
   data: any;
   loading: boolean;
+  transactions: any;
+  settlement: any;
+  onRequestCash: () => void;
 }
 
 const ClubPageDetails: React.FC<ClubPageDetailsProps> = props => {
-  const { data, loading } = props;
+  const { data, loading, transactions, settlement, onRequestCash } = props;
 
   return (
     <>
@@ -20,18 +23,24 @@ const ClubPageDetails: React.FC<ClubPageDetailsProps> = props => {
           <ClubDashboardAgentPayout data={data} loading={loading} />
         </Grid>
         <Grid item xs={12} sm={12} md={6}>
-          <ClubDashboardPayout data={data} loading={loading} />
+          <ClubDashboardPayout
+            data={data}
+            loading={loading}
+            settlement={settlement}
+          />
         </Grid>
         <Grid item xs={12} sm={12} md={12}>
           <Card
             title="My Transactions"
             action={
               <>
-                <Button variant="contained">Request Cash</Button>
+                <Button variant="contained" onClick={() => onRequestCash()}>
+                  Request Cash
+                </Button>
               </>
             }
           >
-            <ClubPageTransactionTable />
+            <ClubPageTransactionTable transactions={transactions} />
           </Card>
         </Grid>
       </Grid>{" "}

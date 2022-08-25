@@ -59,7 +59,7 @@ const AppRoutes = (): JSX.Element => {
       {isAuthenticated ? (
         <AppLayout>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home params={queryParams} />} />
             <Route
               path="clubs"
               element={

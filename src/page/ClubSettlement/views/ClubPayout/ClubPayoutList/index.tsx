@@ -27,7 +27,7 @@ const ClubPayoutList: React.FC<ClubPayoutListProps> = props => {
   // const { params } = props;
   const navigate = useNavigate();
 
-  const { response, loading } = useFetch({
+  const { response, loading, refetch } = useFetch({
     url: GET_CLUB_PAYOUTS
   });
 
@@ -59,9 +59,11 @@ const ClubPayoutList: React.FC<ClubPayoutListProps> = props => {
   const [uploadPayout, uploadPayoutOpts] = makeHttpPost({
     onComplete: () => {
       setFiles([]);
+      refetch();
     },
     onError: err => {
       setFiles([]);
+      refetch();
       if (err.message === "Network Error") {
         // toast.error(
         //   <>

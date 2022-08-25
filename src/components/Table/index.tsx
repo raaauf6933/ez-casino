@@ -25,6 +25,7 @@ interface TableProps {
   toggleAll?: () => void;
   toolbar?: React.ReactNode;
   defaultPageSize?: number;
+  size?: "small" | "medium";
 }
 
 const Table: React.FC<TableProps> = props => {
@@ -37,7 +38,8 @@ const Table: React.FC<TableProps> = props => {
     toggleAll,
     selected,
     toolbar,
-    defaultPageSize
+    defaultPageSize,
+    size
   } = props;
   const classes = useStyles();
   const [state, setState] = React.useState({
@@ -82,6 +84,7 @@ const Table: React.FC<TableProps> = props => {
         <TableComponent
           sx={{ minWidth: minWidth ? minWidth : "unset" }}
           aria-label="simple table"
+          size={size ? size : "medium"}
         >
           {toggleAll ? (
             <TableHeadBulk

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Typography } from "@mui/material";
 import { useUser } from "context/auth/context";
 import { UserTypeEnum } from "types";
@@ -5,7 +6,7 @@ import AgentDashboard from "./views/AgentDashboard";
 import ClubAdminDashboard from "./views/ClubAdminDashboard";
 import SuperAdminDashboard from "./views/SuperAdminDashboard";
 
-const Home = (): JSX.Element => {
+const Home = (props: any): JSX.Element => {
   const user = useUser();
 
   const getUserDashboard = () => {
@@ -13,7 +14,7 @@ const Home = (): JSX.Element => {
       case UserTypeEnum.AGENT:
         return <AgentDashboard />;
       case UserTypeEnum.CLUB_ADMIN:
-        return <ClubAdminDashboard />;
+        return <ClubAdminDashboard params={props.params} />;
       default:
         return <SuperAdminDashboard />;
     }

@@ -30,6 +30,21 @@ export const columns = (usertype?: UserTypeEnum): ColumnType[] => {
       path: "date_created"
     },
     {
+      key: 6,
+      label: "Total Agent Salary",
+      path: "total_agent_salary"
+    },
+    {
+      key: 6,
+      label: "Total Admin Fee",
+      path: "total_admin_fee"
+    },
+    {
+      key: 7,
+      label: "Total Salary",
+      path: "total_salary"
+    },
+    {
       key: 5,
       label: "Status",
       path: "status"
@@ -45,7 +60,10 @@ export const parseBatchPayoutList = (
     date_created: moment(batch.createdAt).format("LL"),
     generated_by: `${batch?.user?.first_name} ${batch?.user?.last_name}`,
     id: batch.id,
-    status: <StatusLabel status={batch.status} />
+    status: <StatusLabel status={batch.status} />,
+    total_admin_fee: currencyFormat(batch?.total_admin_fee),
+    total_agent_salary: currencyFormat(batch?.total_agent_salary),
+    total_salary: currencyFormat(batch?.total_salary)
   }));
 };
 

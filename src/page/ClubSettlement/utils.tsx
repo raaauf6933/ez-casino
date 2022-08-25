@@ -104,3 +104,17 @@ export const parseBatchClubPayoutList = (
     total_club_fee: currencyFormat(batch.total_club_fee)
   }));
 };
+
+export const parseBatchClubPayoutDetails = (
+  response: AxiosResponse<any, any> | undefined
+) => {
+  return response?.data?.club_payout_details[0]?.club_payouts?.map(
+    (club_payout_details: any) => ({
+      amount: currencyFormat(club_payout_details.amount),
+      club_name: club_payout_details?.Club?.club_name,
+      id: club_payout_details.id,
+      status: club_payout_details?.status
+      // total_club_fee: currencyFormat(batch.total_club_fee)
+    })
+  );
+};

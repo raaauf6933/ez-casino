@@ -1,21 +1,22 @@
 import Table from "components/Table";
 import React from "react";
 import ClubTransactionTableColumn from "./column";
-import { my_transaction_data } from "./data";
 
 interface ClubPageTransactionTableProps {
   data?: [];
+  transactions: any;
 }
 
 const ClubPageTransactionTable: React.FC<
   ClubPageTransactionTableProps
-> = () => {
+> = props => {
+  const { transactions } = props;
   return (
     <>
       <Table
         columns={ClubTransactionTableColumn}
         loading={false}
-        data={my_transaction_data}
+        data={transactions}
       />
     </>
   );
