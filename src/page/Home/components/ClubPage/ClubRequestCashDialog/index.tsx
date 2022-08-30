@@ -7,16 +7,18 @@ import { restrictToNumber } from "utils/misc";
 interface ClubRequestCashDialogProps {
   open: boolean;
   onClose: () => void;
+  onSubmit: (data: { amount: number }) => void;
 }
 
 const ClubRequestCashDialog: React.FC<ClubRequestCashDialogProps> = props => {
-  const { open, onClose } = props;
+  const { open, onClose, onSubmit } = props;
   return (
     <>
       <Form
         initial={{
           amount: 0
         }}
+        onSubmit={onSubmit}
       >
         {({ data, submit, change }) => (
           <>

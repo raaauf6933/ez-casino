@@ -28,3 +28,17 @@ export type ClubPayoutListUrlQueryParams = Dialog<ClubPayoutListUrlDialog> & {
 
 export const ClubPayoutListUrl = (params?: ClubPayoutListUrlQueryParams) =>
   clubPayoutListPath + "?" + stringifyQs(params);
+
+export const clubCasAdvanceSection = "/club-settlement/cash-advance";
+
+export const clubCasAdvanceSectionListPath = clubCasAdvanceSection;
+
+export type ClubCasAdvance = "onUpdateStatus";
+export type ClubCasAdvanceUrlQueryParams = Dialog<ClubCasAdvance> & {
+  id?: string;
+  type?: string;
+  status?: string;
+};
+
+export const ClubCasAdvanceListUrl = (params?: ClubCasAdvanceUrlQueryParams) =>
+  clubCasAdvanceSectionListPath + "?" + stringifyQs(params);

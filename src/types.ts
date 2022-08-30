@@ -43,6 +43,12 @@ export enum AgentPayoutStatus {
   PENDING = "PENDING"
 }
 
+export enum CashAdvancesStatus {
+  PENDING = "PENDING",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED"
+}
+
 export interface Node {
   id: string;
 }

@@ -1,9 +1,18 @@
 import * as React from "react";
 import { Chip } from "@mui/material";
-import { AgentPayoutStatus, BatchPayoutStatusType, StatusType } from "types";
+import {
+  AgentPayoutStatus,
+  BatchPayoutStatusType,
+  CashAdvancesStatus,
+  StatusType
+} from "types";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 interface StatusLabelProps {
-  status: StatusType | AgentPayoutStatus | BatchPayoutStatusType;
+  status:
+    | StatusType
+    | AgentPayoutStatus
+    | BatchPayoutStatusType
+    | CashAdvancesStatus;
 }
 
 const StatusLabel: React.FC<StatusLabelProps> = props => {
@@ -35,6 +44,7 @@ const StatusLabel: React.FC<StatusLabelProps> = props => {
         />
       );
     case BatchPayoutStatusType.COMPLETED:
+    case CashAdvancesStatus.APPROVED:
       return (
         <Chip icon={<FiberManualRecordIcon />} color="primary" label={status} />
       );

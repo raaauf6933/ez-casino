@@ -1,8 +1,11 @@
+import { IconButton } from "@mui/material";
 import { AxiosResponse } from "axios";
 import StatusLabel from "components/StatusLabel";
 import moment from "moment";
 import { ColumnType } from "types";
 import { currencyFormat } from "utils/currencyFormat";
+import PriceCheckIcon from "@mui/icons-material/PriceCheck";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 export const club_batch_payout_columns: ColumnType[] = [
   {
@@ -33,6 +36,16 @@ export const club_batch_payout_columns: ColumnType[] = [
 ];
 
 export const club_cash_advance_column: ColumnType[] = [
+  // {
+  //   content: ({ toggle, isSelected, ...props }: any) => {
+  //     return (
+  //       <Checkbox checked={isSelected} onChange={() => toggle(props.id)} />
+  //     );
+  //   },
+  //   key: 0,
+  //   label: "",
+  //   path: "check_box"
+  // },
   {
     key: 1,
     label: "ID",
@@ -57,6 +70,39 @@ export const club_cash_advance_column: ColumnType[] = [
     key: 4,
     label: "Status",
     path: "status"
+  },
+  {
+    content: (props: any) => {
+      if (props.status.props.status === "PENDING") {
+        return (
+          <>
+            <IconButton
+              color="primary"
+              aria-label="upload picture"
+              component="label"
+              onClick={() =>
+                props.openModal({ id: props?.id, status: "APPROVED" })
+              }
+            >
+              <PriceCheckIcon />
+            </IconButton>
+            <IconButton
+              color="error"
+              onClick={() =>
+                props.openModal({ id: props?.id, status: "REJECTED" })
+              }
+            >
+              <CancelIcon />
+            </IconButton>
+          </>
+        );
+      } else {
+        return null;
+      }
+    },
+    key: 5,
+    label: "Action",
+    path: "action"
   }
 ];
 
@@ -117,4 +163,28 @@ export const parseBatchClubPayoutDetails = (
       // total_club_fee: currencyFormat(batch.total_club_fee)
     })
   );
+};
+
+export const parseCashAdvances = (
+  response: AxiosResponse<any, any> | undefined,
+  openModal: (data: any) => void
+  // toggle: (data: string) => void
+) => {
+  return response?.data?.data?.map((cash_advance: any) => {
+    // const isSelected = cash_advance
+    //   ? isChecked(cash_advance?.id?.toString())
+    //   : false;
+
+    return {
+      // action:()=>
+      // isSelected,
+      // toggle
+      amount: currencyFormat(cash_advance.amount),
+      club_name: cash_advance?.Club?.club_name,
+      date_created: moment(cash_advance.createdAt).format("LLL"),
+      id: cash_advance?.id?.toString(),
+      openModal,
+      status: <StatusLabel status={cash_advance.status} />
+    };
+  });
 };
