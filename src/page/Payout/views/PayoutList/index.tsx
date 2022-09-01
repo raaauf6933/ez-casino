@@ -11,7 +11,11 @@ import {
 } from "page/Payout/url";
 import FileUpload from "react-material-file-upload";
 import makeHttpPost from "hooks/makeHttpPost";
-import { GET_BATCHES, UPLOAD_PAYOUT } from "page/Payout/api";
+import {
+  EXPORT_AGENT_PAYOUT_TEMPLATE,
+  GET_BATCHES,
+  UPLOAD_PAYOUT
+} from "page/Payout/api";
 import { ErrorPayoutHandlers } from "page/Payout/handlers";
 import { parseBatchPayoutList } from "./../../utils";
 // import { Typography } from "@mui/material";
@@ -64,6 +68,12 @@ const PayoutList: React.FC<PayoutListProps> = props => {
     }
   });
 
+  const [exportAgentPayout] = makeHttpPost({
+    onComplete: e => {
+      window.open(e.data.destination, "_blank");
+    }
+  });
+
   const onUploadPayout = () => {
     const formData = new FormData();
     formData.append("file", files[0]);
@@ -82,6 +92,15 @@ const PayoutList: React.FC<PayoutListProps> = props => {
     toast("Batch has been processed. It will take 3-5 minutes to save");
   };
 
+  const onExportAgentTemplate = () => {
+    exportAgentPayout({
+      data: {
+        club_id: user?.club_id
+      },
+      url: EXPORT_AGENT_PAYOUT_TEMPLATE
+    });
+  };
+
   return (
     <>
       <ListPage
@@ -89,6 +108,7 @@ const PayoutList: React.FC<PayoutListProps> = props => {
         data={batch_list}
         onUploadPayout={() => openModal("dialog", "uploadPayoutBatch")}
         onRowClick={id => navigate(payoutPath(id))}
+        onExportAgentTemplate={onExportAgentTemplate}
       />
       <ActionDialog
         open={params.action === "uploadPayoutBatch"}

@@ -1,20 +1,23 @@
 import React, { useState } from "react";
 import Table from "components/Table";
-import { Card, Button } from "@mui/material";
+import { Card } from "@mui/material";
 import { ColumnType, UserTypeEnum } from "types";
 import PageHeader from "components/PageHeader";
 import SearchBar from "components/SearchBar";
 import RequirePermission from "components/RequirePermission";
+import ButtonGroup from "components/ButtonGroup";
 
 interface ListPageProps {
   columns: ColumnType[];
   data: any[];
   onUploadPayout: () => void;
   onRowClick: (id: string) => void;
+  onExportAgentTemplate: () => void;
 }
 
 const ListPage: React.FC<ListPageProps> = props => {
-  const { columns, data, onUploadPayout, onRowClick } = props;
+  const { columns, data, onUploadPayout, onRowClick, onExportAgentTemplate } =
+    props;
   const [searchValue, setSearchValue] = useState<string>("");
 
   return (
@@ -24,13 +27,20 @@ const ListPage: React.FC<ListPageProps> = props => {
         toolbar={
           <>
             <RequirePermission userTypes={[UserTypeEnum.CLUB_ADMIN]}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={onUploadPayout}
-              >
-                Generate Payout
-              </Button>
+              <ButtonGroup
+                buttons={{
+                  buttons: [
+                    {
+                      label: "Export Agent Payout Template",
+                      onClick: onExportAgentTemplate
+                    }
+                  ],
+                  mainButton: {
+                    label: "Generate Payout",
+                    onClick: onUploadPayout
+                  }
+                }}
+              />
             </RequirePermission>
           </>
         }
