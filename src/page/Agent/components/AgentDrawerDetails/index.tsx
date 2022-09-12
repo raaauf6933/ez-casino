@@ -6,6 +6,7 @@ import {
   IconButton,
   Tooltip
 } from "@mui/material";
+import ReplayIcon from "@mui/icons-material/Replay";
 import Drawer from "components/Drawer";
 import Table from "components/Table";
 import { useUser } from "context/auth/context";
@@ -27,6 +28,7 @@ interface AgentDrawerDetailsProps extends useBulkActionsTypes {
   onChangeUpperAgent: () => void;
   onChangeGameId: () => void;
   onDeleteAgent: (newStatus: StatusType) => void;
+  onSingleChangeUpperAgent: () => void;
 }
 
 const AgentDrawerDetails: React.FC<AgentDrawerDetailsProps> = props => {
@@ -43,7 +45,8 @@ const AgentDrawerDetails: React.FC<AgentDrawerDetailsProps> = props => {
     toggleAll,
     reset,
     onChangeGameId,
-    onDeleteAgent
+    onDeleteAgent,
+    onSingleChangeUpperAgent
   } = props;
   const user = useUser();
   const loading = agentLoading || !agent;
@@ -123,7 +126,20 @@ const AgentDrawerDetails: React.FC<AgentDrawerDetailsProps> = props => {
                 </tr>
                 <tr>
                   <th align="left">Added By</th>
-                  <td align="left">{agent?.added_by?.name}</td>
+                  <td align="left">
+                    <Box display="flex">
+                      <span>
+                        {agent?.added_by?.game_id} - {agent?.added_by?.name}{" "}
+                      </span>
+                      <IconButton
+                        size="small"
+                        color="info"
+                        onClick={onSingleChangeUpperAgent}
+                      >
+                        <ReplayIcon />
+                      </IconButton>
+                    </Box>
+                  </td>
                 </tr>
                 {user?.usertype === UserTypeEnum.AGENT ? null : (
                   <tr>

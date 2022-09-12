@@ -102,7 +102,7 @@ const EditAgentDialog: React.FC<EditAgentDialogProps> = props => {
                           step={1}
                           marks
                           min={55}
-                          max={70}
+                          max={85}
                           name="comms_rate"
                           value={data.comms_rate}
                           onChange={(_, newValue) =>

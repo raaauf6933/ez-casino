@@ -3,6 +3,8 @@ import {
   CHANGE_UPPERAGENT,
   GET_AGENT,
   GET_AGENTS,
+  GET_AVAILABLE_AGENTS,
+  SINGLE_CHANGE_UPPER_AGENT,
   UPDATE_AGENT,
   UPDATE_AGENT_STATUS
 } from "page/Agent/api";
@@ -27,6 +29,7 @@ import useBulkActions from "hooks/useBulkActions";
 import { ErrorChangeUpperAgentHandler } from "page/Agent/handlers";
 import EditAgentDialog from "page/Agent/components/EditAgentDialog";
 import { Typography } from "@mui/material";
+import SingleChangeAgentDialog from "page/Agent/components/SingleChangeAgentDialog";
 
 interface AgentListProps {
   params: AgentListUrlQueryParams;
@@ -69,6 +72,33 @@ const AgentList: React.FC<AgentListProps> = props => {
       skip: !params.id
     }
   );
+
+  const { response: availableAgents, loading: loadingAvailableAgents } =
+    useFetch(
+      {
+        params: {
+          id: params.id
+        },
+        url: GET_AVAILABLE_AGENTS
+      },
+      {
+        skip: !params.id
+      }
+    );
+
+  const [singleChangeUpperAgent] = makeHttpPost({
+    onComplete: () => {
+      toast("Changes Saved!");
+      refetchList();
+      closeAction("dialog");
+      if (params.id) {
+        refetchAgent();
+      }
+    },
+    onError: err => {
+      toast.error(err.response?.data.message);
+    }
+  });
 
   const {
     response: allAgents,
@@ -178,6 +208,19 @@ const AgentList: React.FC<AgentListProps> = props => {
     return result;
   };
 
+  const handleSingleChangeUpperAgent = async (formData: any) => {
+    const result = await singleChangeUpperAgent({
+      data: {
+        agent_id: formData.agent ? formData.agent : null,
+        id: parseInt(params.id ? params.id : ""),
+        transfer_to_club_admin: formData.transfer_to_club_admin
+      },
+      url: SINGLE_CHANGE_UPPER_AGENT
+    });
+
+    return result;
+  };
+
   return (
     <>
       <ListPage
@@ -209,6 +252,9 @@ const AgentList: React.FC<AgentListProps> = props => {
         onChangeGameId={() => openAction("dialog", "onEditAgent")}
         onDeleteAgent={(newStatus: StatusType) =>
           openAction("dialog", "onDeleteAgent", { newStatus })
+        }
+        onSingleChangeUpperAgent={() =>
+          openAction("dialog", "onSingleChangeUpperAgent")
         }
         {...bulkActions}
       />
@@ -262,6 +308,15 @@ const AgentList: React.FC<AgentListProps> = props => {
           </p>
         </ActionDialog>
       ) : null}
+      {
+        <SingleChangeAgentDialog
+          open={params.action === "onSingleChangeUpperAgent"}
+          closeAction={() => closeAction("dialog")}
+          loading={loadingAvailableAgents}
+          availableAgents={availableAgents}
+          onSubmit={handleSingleChangeUpperAgent}
+        />
+      }
     </>
   );
 };

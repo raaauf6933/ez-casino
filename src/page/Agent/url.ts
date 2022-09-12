@@ -17,7 +17,8 @@ export type AgentListUrlDialog =
   | "onUpdateStatus"
   | "onChangeUpperAgent"
   | "onEditAgent"
-  | "onDeleteAgent";
+  | "onDeleteAgent"
+  | "onSingleChangeUpperAgent";
 
 export type AgentListUrlQueryParams = Dialog<AgentListUrlDialog> & {
   id?: string;
