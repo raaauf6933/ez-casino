@@ -131,13 +131,15 @@ const AgentDrawerDetails: React.FC<AgentDrawerDetailsProps> = props => {
                       <span>
                         {agent?.added_by?.game_id} - {agent?.added_by?.name}{" "}
                       </span>
-                      <IconButton
-                        size="small"
-                        color="info"
-                        onClick={onSingleChangeUpperAgent}
-                      >
-                        <ReplayIcon />
-                      </IconButton>
+                      {user?.usertype === UserTypeEnum.CLUB_ADMIN && (
+                        <IconButton
+                          size="small"
+                          color="info"
+                          onClick={onSingleChangeUpperAgent}
+                        >
+                          <ReplayIcon />
+                        </IconButton>
+                      )}
                     </Box>
                   </td>
                 </tr>
