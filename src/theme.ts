@@ -8,7 +8,7 @@ export default (): Theme =>
         main: "#dc3545"
       },
       primary: {
-        main: "rgb(20, 168, 115)"
+        main: "#FFD700"
       },
       warning: {
         main: ywcollor[300]

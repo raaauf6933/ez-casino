@@ -24,13 +24,13 @@ const SideMenu = (): JSX.Element => {
   );
 
   const activeStyle = {
-    color: "#14A873",
+    color: "#FFD700",
     fontSize: "1.2em",
     textDecoration: "none"
   };
 
   const defaultStyle = {
-    color: "black",
+    color: "white",
     fontSize: "1.2em",
     textDecoration: "none"
   };
@@ -40,6 +40,7 @@ const SideMenu = (): JSX.Element => {
       variant="permanent"
       sx={{
         "& .MuiDrawer-paper": {
+          background: "#1B2430",
           boxSizing: "border-box",
           position: "unset",
           width: drawerWidth
@@ -51,6 +52,7 @@ const SideMenu = (): JSX.Element => {
 
         width: drawerWidth
       }}
+      color="primary"
     >
       <List
         sx={{
@@ -76,7 +78,13 @@ const SideMenu = (): JSX.Element => {
                   }
                 >
                   <ListItemButton>
-                    <ListItemIcon>{list.icon}</ListItemIcon>
+                    <ListItemIcon
+                      style={{
+                        color: "white"
+                      }}
+                    >
+                      {list.icon}
+                    </ListItemIcon>
                     <ListItemText
                       primary={list.label}
                       sx={{

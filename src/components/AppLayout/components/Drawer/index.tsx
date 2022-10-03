@@ -29,13 +29,13 @@ const MobileDrawer: React.FC<DrawerProps> = props => {
   );
 
   const activeStyle = {
-    color: "#14A873",
+    color: "#FFD700",
     fontSize: "1.2em",
     textDecoration: "none"
   };
 
   const defaultStyle = {
-    color: "black",
+    color: "white",
     fontSize: "1.2em",
     textDecoration: "none"
   };
@@ -50,6 +50,12 @@ const MobileDrawer: React.FC<DrawerProps> = props => {
       //       width: "auto"
       //     }
       //   }}
+      color="primary"
+      sx={{
+        "& .MuiDrawer-paper": {
+          background: "#1B2430"
+        }
+      }}
     >
       <List
         sx={{
@@ -75,7 +81,13 @@ const MobileDrawer: React.FC<DrawerProps> = props => {
                   }
                 >
                   <ListItemButton>
-                    <ListItemIcon>{list.icon}</ListItemIcon>
+                    <ListItemIcon
+                      style={{
+                        color: "white"
+                      }}
+                    >
+                      {list.icon}
+                    </ListItemIcon>
                     <ListItemText
                       primary={list.label}
                       sx={{

@@ -133,6 +133,9 @@ const Login: React.FC = props => {
                       fullWidth
                       onClick={submit}
                       disabled={state.loading}
+                      sx={{
+                        fontWeight: 600
+                      }}
                     >
                       Login
                     </Button>

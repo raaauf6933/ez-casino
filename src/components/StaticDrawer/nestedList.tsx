@@ -20,13 +20,13 @@ const NestedList: React.FC<NestedListProps> = props => {
   const [openMenu, setOpenMenu] = React.useState(false);
 
   const activeStyle = {
-    color: "#14A873",
+    color: "#FFD700",
     fontSize: "1.2em",
     textDecoration: "none"
   };
 
   const defaultStyle = {
-    color: "black",
+    color: "white",
     fontSize: "1.2em",
     textDecoration: "none"
   };
@@ -34,11 +34,12 @@ const NestedList: React.FC<NestedListProps> = props => {
   return (
     <>
       <ListItemButton onClick={() => setOpenMenu(prevState => !prevState)}>
-        <ListItemIcon>{list.icon}</ListItemIcon>
+        <ListItemIcon sx={{ color: "white" }}>{list.icon}</ListItemIcon>
         <ListItemText
           primary={list.label}
           sx={{
             "& .MuiTypography-root": {
+              color: "white",
               fontSize: "1.2em"
             }
           }}
@@ -56,7 +57,9 @@ const NestedList: React.FC<NestedListProps> = props => {
                 }
               >
                 <ListItemButton sx={{ pl: 4 }}>
-                  <ListItemIcon>{subList.icon}</ListItemIcon>
+                  <ListItemIcon sx={{ color: "white" }}>
+                    {subList.icon}
+                  </ListItemIcon>
                   <ListItemText primary={subList.label} />
                 </ListItemButton>
               </NavLink>

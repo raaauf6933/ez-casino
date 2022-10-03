@@ -8,7 +8,16 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = props => {
   const { children } = props;
 
-  return <Box component="main">{children}</Box>;
+  return (
+    <Box
+      component="main"
+      sx={{
+        background: "#1B2430"
+      }}
+    >
+      {children}
+    </Box>
+  );
 };
 
 export default Layout;

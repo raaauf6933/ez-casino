@@ -30,9 +30,10 @@ const AppHeader: React.FC<AppHeaderProps> = (props: AppHeaderProps) => {
     <Box>
       <AppBar
         position="static"
-        style={{
-          background: "#14A873"
-        }}
+        // style={{
+        //   background: "#14A873"
+        // }}
+        color="primary"
       >
         <Toolbar>
           <Hidden smUp>
