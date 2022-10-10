@@ -12,6 +12,11 @@ const PayoutBatchDetailsColumn: ColumnType[] = [
     path: "name"
   },
   {
+    key: 2,
+    label: "Commission",
+    path: "commission"
+  },
+  {
     key: 99,
     label: "Commission Rate",
     path: "comms_rate"
@@ -25,6 +30,11 @@ const PayoutBatchDetailsColumn: ColumnType[] = [
     key: 4,
     label: "Sub Agent Salary",
     path: "sub_agent_salary"
+  },
+  {
+    key: 41,
+    label: "Union Fee",
+    path: "union_fee"
   },
   {
     key: 5,

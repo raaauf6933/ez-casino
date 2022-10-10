@@ -76,6 +76,11 @@ export const parseAgentPayout = (
         {currencyFormat(agent_payout?.admin_fee)}
       </Typography>
     ),
+    commission: (
+      <Typography color="green">
+        {currencyFormat(agent_payout?.commission)}
+      </Typography>
+    ),
     comms_rate: (
       <Typography fontWeight={600}>{agent_payout?.comms_rate}%</Typography>
     ),
@@ -99,6 +104,11 @@ export const parseAgentPayout = (
       <Typography fontWeight={600}>
         {currencyFormat(agent_payout?.total_salary)}
       </Typography>
+    ),
+    union_fee: (
+      <Typography color="red">
+        {currencyFormat(agent_payout?.union_fee)}
+      </Typography>
     )
   }));
 };
@@ -108,6 +118,11 @@ export const parseSubAgent = (data: any) => {
     admin_fee: (
       <Typography color="red">
         {currencyFormat(agent_payout?.admin_fee)}
+      </Typography>
+    ),
+    commission: (
+      <Typography color="green">
+        {currencyFormat(agent_payout?.commission)}
       </Typography>
     ),
     comms_rate: (
@@ -131,6 +146,11 @@ export const parseSubAgent = (data: any) => {
     total_salary: (
       <Typography fontWeight={600}>
         {currencyFormat(agent_payout?.total_salary)}
+      </Typography>
+    ),
+    union_fee: (
+      <Typography color="red">
+        {currencyFormat(agent_payout?.union_fee)}
       </Typography>
     )
   }));

@@ -8,6 +8,7 @@ export default (): Theme =>
         main: "#dc3545"
       },
       primary: {
+        contrastText: "#16213E",
         main: "#FFD700"
       },
       warning: {

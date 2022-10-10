@@ -43,6 +43,12 @@ const PayoutBatchInfo: React.FC<PayoutBatchInfoProps> = props => {
           <Typography>{currencyFormat(data?.total_agent_salary)}</Typography>
         </Grid>
         <Grid item md={6} lg={6}>
+          <Typography fontWeight={600}>Total Union Fee</Typography>
+        </Grid>
+        <Grid item md={6} lg={6}>
+          <Typography>{currencyFormat(data?.total_union_fee)}</Typography>
+        </Grid>
+        <Grid item md={6} lg={6}>
           <Typography fontWeight={600}>Total Admin Fee</Typography>
         </Grid>
         <Grid item md={6} lg={6}>
